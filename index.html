@@ -4,21 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0b0d12">
-<meta property="og:title" content="Jeeva Ganesh Kumar · Human-Centred AI & ML Engineer">
-<meta property="og:description" content="AWS & Microsoft Certified Machine Learning Engineer. Explainable ML, Deep Learning, LLM evaluation, RAG and MLOps. MSc Human-Centred AI, TU Dublin.">
+<meta property="og:title" content="Jeeva Ganesh Kumar · Machine Learning & AI Engineer">
+<meta property="og:description" content="AWS and Microsoft certified ML engineer. Explainable ML, MLOps, LLM evaluation and RAG. MSc Human-Centred AI, TU Dublin.">
 <meta property="og:url" content="https://jeevjk.github.io/">
-<title>Jeeva Ganesh Kumar — AI & Machine Learning Engineer</title>
-<meta name="description" content="Jeeva Ganesh Kumar (JK): AWS & Microsoft Certified Machine Learning Engineer. MSc in Human-Centred AI at TU Dublin, ex-Protiviti Technology Consultant. Explainable ML, Deep Learning, LLM evaluation, RAG and MLOps.">
+<title>Jeeva Ganesh Kumar</title>
+<meta name="description" content="Jeeva Ganesh Kumar (JK): AWS and Microsoft certified ML engineer. MSc Human-Centred AI at TU Dublin, ex-Protiviti technology consultant. Explainable ML, MLOps, LLM evaluation and RAG.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,300;1,400;1,500&family=Figtree:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: split hero with a live 3D mathematical point-cloud & synaptic mesh that morphs per section; 1180px column below on a 6-col card grid */
+/* Layout: split hero with a live 3D point cloud that glides between sections and morphs per section; one 1180px column below */
+@property --ang{syntax:'<angle>';initial-value:0deg;inherits:false}
 :root{
   --ink:#0b0d12;
   --ink-2:#10131a;
   --panel:rgba(16,19,26,.86);
-  --panel-solid:#141821;
+  --panel-solid:#131720;
   --fg:#ecebe6;
   --fg-2:#a7acb8;
   --fg-3:#6b7180;
@@ -26,13 +27,13 @@
   --gold-2:#efd38f;
   --steel:#8fb3cf;
   --live:#7fc8a0;
-  --line:rgba(214,178,94,.18);
+  --line:rgba(214,178,94,.2);
   --line-2:rgba(236,235,230,.08);
   --f-display:'Cormorant Garamond', 'Iowan Old Style', Georgia, serif;
   --f-body:'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --f-mono:'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
-  --gutter-l:max(24px, env(safe-area-inset-left, 0px));
-  --gutter-r:max(24px, env(safe-area-inset-right, 0px));
+  --gutter-l:max(20px, env(safe-area-inset-left, 0px));
+  --gutter-r:max(20px, env(safe-area-inset-right, 0px));
   color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:border-box}
@@ -45,76 +46,104 @@ a{color:inherit}
 h1,h2,h3,h4{text-wrap:balance;margin:0}
 p{margin:0}
 
-/* 3D INTERACTIVE CANVAS */
 #scene{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.spot{position:fixed;left:0;top:0;width:620px;height:620px;margin:-310px 0 0 -310px;border-radius:50%;background:radial-gradient(circle,rgba(214,178,94,.075),transparent 62%);pointer-events:none;z-index:0;opacity:0;transition:opacity .6s}
+.spot.on{opacity:1}
 main,footer,.nav{position:relative;z-index:1}
-
+main{overflow-x:clip}
+.mq-clip{overflow:hidden;position:relative;z-index:1}
 .wrap{max-width:1180px;margin-inline:auto;padding-left:var(--gutter-l);padding-right:var(--gutter-r)}
 
 /* NAV */
-.nav{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50;transition:background .3s,border-color .3s,backdrop-filter .3s;border-bottom:1px solid transparent}
-.nav.scrolled{background:rgba(11,13,18,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom-color:var(--line-2)}
+.nav{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+.nav.scrolled{background:rgba(11,13,18,.9);border-bottom-color:var(--line-2)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:68px}
 .logo{font-family:var(--f-display);font-style:italic;font-size:1.55rem;color:var(--gold);text-decoration:none;letter-spacing:.04em;display:inline-flex;align-items:center;gap:10px}
-.logo-badge{font-family:var(--f-mono);font-style:normal;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-3);border:1px solid var(--line-2);padding:3px 8px;border-radius:999px}
-.nav-links{display:flex;gap:28px;list-style:none;margin:0;padding:0}
-.nav-links a{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-2);text-decoration:none;padding:6px 0;position:relative;transition:color .25s}
-.nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.logo i{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold)}
+.nav-links{display:flex;gap:26px;list-style:none;margin:0;padding:0}
+.nav-links a{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-2);text-decoration:none;padding:6px 0;position:relative;transition:color .25s}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;background:linear-gradient(90deg,var(--gold),var(--steel));transform:scaleX(0);transform-origin:left;transition:transform .3s}
 .nav-links a:hover,.nav-links a.active{color:var(--gold-2)}
 .nav-links a.active::after,.nav-links a:hover::after{transform:scaleX(1)}
 .menu-btn{display:none;background:none;border:1px solid var(--line);color:var(--fg);font-family:var(--f-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;padding:9px 14px;border-radius:999px;cursor:pointer}
+.progress{position:absolute;left:0;bottom:-1px;height:2px;width:100%;background:linear-gradient(90deg,var(--gold),var(--gold-2),var(--steel));transform-origin:left;transform:scaleX(0)}
+
+/* RAIL + HUD */
+.rail{position:fixed;left:max(24px,env(safe-area-inset-left,0px));bottom:max(28px,env(safe-area-inset-bottom,0px));z-index:40;display:flex;flex-direction:column;align-items:center;gap:12px}
+.rail::after{content:"";width:1px;height:56px;background:linear-gradient(var(--gold),transparent)}
+.rail a{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-2);background:var(--panel);color:var(--fg-2);font-family:var(--f-mono);font-size:.68rem;text-decoration:none;transition:all .3s}
+.rail a:hover{color:var(--gold-2);border-color:var(--gold);transform:translateY(-3px) scale(1.08);box-shadow:0 0 18px rgba(214,178,94,.25)}
+.hud{position:fixed;right:max(24px,env(safe-area-inset-right,0px));bottom:max(24px,env(safe-area-inset-bottom,0px));z-index:40;display:flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-2);background:var(--panel);border:1px solid var(--line);padding:9px 16px;border-radius:999px;text-decoration:none;transition:all .3s}
+.hud:hover{color:var(--gold-2);border-color:var(--gold);box-shadow:0 0 22px rgba(214,178,94,.2)}
+.hud i,.status i{width:8px;height:8px;border-radius:50%;background:var(--live);animation:ping 2.4s infinite}
 
 /* HERO */
-.hero .wrap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:40px;align-items:center;min-height:min(820px,94svh);padding-block:124px 68px}
-.eyebrow{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
-.status-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.status{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;color:var(--fg-2);border:1px solid var(--line-2);background:var(--panel);padding:7px 14px 7px 12px;border-radius:999px;backdrop-filter:blur(8px)}
-.status i{width:8px;height:8px;border-radius:50%;background:var(--live);box-shadow:0 0 0 0 rgba(127,200,160,.6);animation:ping 2.4s infinite}
-.status.cert-pill{border-color:var(--line);color:var(--gold-2)}
-.hero h1{font-family:var(--f-display);font-weight:400;font-size:clamp(3.4rem,8.8vw,7.4rem);line-height:.92;letter-spacing:-.015em;margin-top:22px}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:40px;align-items:center;min-height:min(820px,94svh);padding-block:116px 64px}
+.eyebrow{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);display:inline-flex;align-items:center;gap:12px}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--gold)}
+.status{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;color:var(--fg-2);border:1px solid var(--line-2);background:var(--panel);padding:7px 14px 7px 12px;border-radius:999px}
+.hero h1{font-family:var(--f-display);font-weight:400;font-size:clamp(3.4rem,8.6vw,7.4rem);line-height:.92;letter-spacing:-.015em;margin-top:20px}
 .hero h1 em{display:block;font-style:italic;font-weight:300;color:var(--gold)}
-.hero-lede{font-size:clamp(1.05rem,1.55vw,1.2rem);color:var(--fg-2);max-width:35em;margin-top:26px;line-height:1.68}
+.hero h1 .ch{display:inline-block;animation:drop .9s cubic-bezier(.2,.8,.2,1) both;transform-origin:50% 100%}
+.roles{margin-top:18px;font-family:var(--f-mono);font-size:clamp(.82rem,1.4vw,.95rem);letter-spacing:.06em;color:var(--fg-2);min-height:1.7em}
+.roles b{color:var(--gold-2);font-weight:500}
+.roles .caret{display:inline-block;width:8px;height:1.05em;vertical-align:-2px;background:var(--gold);margin-left:3px;animation:blink 1s steps(1) infinite}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.bdg{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(214,178,94,.08);color:var(--gold-2)}
+.bdg.alt{border-color:rgba(143,179,207,.28);background:rgba(143,179,207,.07);color:var(--steel)}
+.hero-lede{font-size:clamp(1.02rem,1.5vw,1.16rem);color:var(--fg-2);max-width:34em;margin-top:22px;line-height:1.65}
 .hero-lede strong{color:var(--fg);font-weight:500}
-.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
-.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:14px 22px;border-radius:999px;transition:transform .25s,background .25s,border-color .25s,color .25s;cursor:pointer}
-.btn-gold{background:var(--gold);color:var(--ink);font-weight:500}
-.btn-gold:hover{background:var(--gold-2);transform:translateY(-2px)}
-.btn-ghost{border:1px solid var(--line);color:var(--fg);background:rgba(16,19,26,.55);backdrop-filter:blur(6px)}
-.btn-ghost:hover{border-color:var(--gold);color:var(--gold-2);transform:translateY(-2px)}
-
-/* INTERACTIVE 3D HUD & SHAPE CONTROLLER */
-.hero-side{align-self:end;justify-self:end;text-align:right;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;color:var(--fg-3);line-height:1.9;background:rgba(16,19,26,.72);border:1px solid var(--line-2);border-radius:14px;padding:16px 20px;backdrop-filter:blur(10px);max-width:340px}
-.hero-side b{color:var(--gold-2);font-weight:400}
-.shape-dock{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;margin-top:10px}
-.shape-btn{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;background:transparent;color:var(--fg-2);border:1px solid var(--line-2);padding:4px 9px;border-radius:999px;cursor:pointer;transition:all .2s}
-.shape-btn:hover,.shape-btn.active{border-color:var(--gold);color:var(--ink);background:var(--gold)}
-
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:14px 22px;border-radius:999px;transition:background .25s,border-color .25s,color .25s,box-shadow .25s;cursor:pointer;will-change:transform}
+.btn-gold{background:var(--gold);color:var(--ink);font-weight:500;box-shadow:0 10px 30px -10px rgba(214,178,94,.6)}
+.btn-gold:hover{background:var(--gold-2);box-shadow:0 14px 36px -10px rgba(214,178,94,.8)}
+.btn-ghost{border:1px solid var(--line);color:var(--fg)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold-2)}
+.hero-side{align-self:end;justify-self:end;margin-bottom:56px;text-align:right;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;color:var(--fg-3);line-height:1.9}
+.hero-side b{color:var(--gold);font-weight:400}
 .rise{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
-.d1{animation-delay:.08s}.d2{animation-delay:.18s}.d3{animation-delay:.3s}.d4{animation-delay:.42s}.d5{animation-delay:.54s}
+.d1{animation-delay:.08s}.d2{animation-delay:.18s}.d3{animation-delay:.3s}.d4{animation-delay:.42s}.d5{animation-delay:.54s}.d6{animation-delay:.66s}
+.scroll-cue{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;font-family:var(--f-mono);font-size:.6rem;letter-spacing:.2em;color:var(--fg-3);text-transform:uppercase}
+.scroll-cue i{width:1px;height:42px;background:linear-gradient(var(--gold),transparent);animation:cue 2s infinite}
 
-/* STATS BAND */
-.stats-band{position:relative;z-index:1;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--panel);backdrop-filter:blur(10px)}
-.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
-.stat{padding:26px 22px;display:flex;flex-direction:column;gap:6px}
+/* STATS */
+.stats-band{position:relative;z-index:1;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--panel)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.stat{padding:26px 24px;display:flex;flex-direction:column;gap:6px}
 .stat+.stat{border-left:1px solid var(--line-2)}
-.stat b{font-family:var(--f-display);font-weight:400;font-size:clamp(2.1rem,3.6vw,2.9rem);line-height:1;color:var(--gold-2);font-variant-numeric:tabular-nums}
-.stat span{font-size:.84rem;color:var(--fg-2);line-height:1.5}
+.stat b{font-family:var(--f-display);font-weight:400;font-size:clamp(2.3rem,4vw,3.1rem);line-height:1;color:var(--gold-2);font-variant-numeric:tabular-nums}
+.stat span{font-size:.86rem;color:var(--fg-2);line-height:1.5}
+
+/* MARQUEE */
+.marquee{position:relative;z-index:1;overflow:hidden;padding-block:26px;transform:perspective(900px) rotateX(18deg) rotateZ(-2deg);margin-block:20px}
+.mq-row{display:flex;gap:14px;width:max-content;animation:mq 46s linear infinite}
+.mq-row.rev{animation-direction:reverse;animation-duration:52s;margin-top:12px}
+.mq-row span{font-family:var(--f-display);font-style:italic;font-size:clamp(1.4rem,3vw,2.2rem);color:var(--fg-3);white-space:nowrap;display:inline-flex;align-items:center;gap:14px}
+.mq-row span::after{content:"✦";font-style:normal;font-size:.6em;color:var(--gold)}
+.mq-row.rev span{color:transparent;-webkit-text-stroke:1px rgba(214,178,94,.45)}
+.marquee::before,.marquee::after{content:"";position:absolute;top:0;bottom:0;width:12%;z-index:2;pointer-events:none}
+.marquee::before{left:0;background:linear-gradient(90deg,var(--ink),transparent)}
+.marquee::after{right:0;background:linear-gradient(-90deg,var(--ink),transparent)}
 
 /* SECTIONS */
-section{padding-block:clamp(76px,10vw,124px)}
+section{padding-block:clamp(72px,10vw,120px)}
 .head{display:flex;flex-direction:column;gap:12px;margin-bottom:44px;max-width:46rem}
 .head h2{font-family:var(--f-display);font-weight:400;font-size:clamp(2.3rem,5vw,3.6rem);line-height:1.04}
-.head h2 em{color:var(--gold);font-style:italic;font-weight:300}
-.head p{color:var(--fg-2);max-width:40em}
+.head h2 em,.big-title em{color:var(--gold);font-style:italic;font-weight:300}
+.head p{color:var(--fg-2);max-width:38em}
+.card{background:var(--panel);border:1px solid var(--line-2);border-radius:14px}
 
-/* MODEL CARD (ABOUT) */
+/* REVEAL (only applied to content below the first screen) */
+.rv{transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.rv.pre{opacity:0;transform:perspective(900px) rotateX(16deg) translateY(44px) scale(.98)}
+
+/* MODEL CARD */
 .mc{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px;align-items:start}
-.card{background:var(--panel);border:1px solid var(--line-2);border-radius:14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.mc-main{padding:8px 0}
+.mc-main{padding:8px 0;margin:0}
 .mc-row{display:grid;grid-template-columns:150px minmax(0,1fr);gap:20px;padding:18px 28px;border-top:1px solid var(--line-2)}
 .mc-row:first-child{border-top:0}
 .mc-row dt{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);padding-top:4px}
-.mc-row dd{margin:0;color:var(--fg-2);font-size:.96rem}
+.mc-row dd{margin:0;color:var(--fg-2);font-size:.97rem}
 .mc-row dd strong{color:var(--fg);font-weight:500}
 .mc-side{padding:26px 28px;display:flex;flex-direction:column;gap:24px}
 .mc-side h3{font-family:var(--f-mono);font-size:.7rem;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
@@ -122,114 +151,156 @@ section{padding-block:clamp(76px,10vw,124px)}
 .lang{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center;font-size:.92rem}
 .lang small{font-family:var(--f-mono);font-size:.68rem;color:var(--fg-3);letter-spacing:.06em}
 .meter{grid-column:1/-1;height:3px;background:var(--line-2);border-radius:3px;overflow:hidden}
-.meter i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-2));border-radius:3px}
+.meter i{display:block;height:100%;width:var(--w);background:linear-gradient(90deg,var(--gold),var(--gold-2));border-radius:3px;transform-origin:left;transition:transform 1.4s cubic-bezier(.2,.7,.2,1)}
+.mc-side.pre .meter i{transform:scaleX(0)}
 .where{font-size:.92rem;color:var(--fg-2);display:flex;flex-direction:column;gap:4px;margin-top:10px}
 
-/* EXPERIENCE */
-.role{display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
-.role-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 24px;padding-bottom:18px;border-bottom:1px solid var(--line)}
-.role-top h3{font-family:var(--f-display);font-weight:500;font-size:clamp(1.7rem,3vw,2.2rem)}
-.role-top .org{color:var(--fg-2);font-size:1rem}
-.when{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.1em;color:var(--gold);text-transform:uppercase}
-.impact-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.impact-pill{padding:18px 20px;border-left:2px solid var(--gold);background:rgba(214,178,94,.05);border-radius:0 12px 12px 0;font-size:.9rem;color:var(--fg-2)}
-.impact-pill strong{color:var(--gold-2);font-weight:500;font-family:var(--f-mono);font-size:.82rem;display:block;margin-bottom:4px;letter-spacing:.06em;text-transform:uppercase}
-.engagements{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.eng{padding:24px 24px 22px;display:flex;flex-direction:column;gap:10px}
-.eng .k{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel)}
-.eng h4{margin:0;font-family:var(--f-display);font-weight:500;font-size:1.45rem;line-height:1.2;color:var(--fg)}
-.eng p{color:var(--fg-2);font-size:.94rem}
-.how{display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:var(--fg-2);font-size:.92rem;padding-top:4px}
-.how span:first-child{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-right:6px}
-.now{margin-top:40px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
-.now .eng h4{font-size:1.3rem}
+/* WHAT I DO */
+.what{display:grid;grid-template-columns:minmax(0,1fr) minmax(200px,.62fr) minmax(0,1.2fr);gap:28px;align-items:center}
+.big-title{font-family:var(--f-display);font-weight:400;font-size:clamp(3rem,6vw,5rem);line-height:.95}
+.what-copy p{color:var(--fg-2);margin-top:18px;max-width:22em}
+.what-stage{min-height:340px}
+.do-list{display:flex;flex-direction:column;gap:14px}
+.do{position:relative;padding:22px 24px;border-radius:14px;border:1px solid transparent;background:linear-gradient(var(--panel-solid),var(--panel-solid)) padding-box,conic-gradient(from var(--ang),rgba(214,178,94,.08),rgba(214,178,94,.7),rgba(143,179,207,.5),rgba(214,178,94,.08) 40%) border-box;animation:spin 7s linear infinite;transition:transform .6s cubic-bezier(.2,.7,.2,1),opacity .9s cubic-bezier(.2,.7,.2,1)}
+.do:hover{transform:translateX(-6px)}
+.do:nth-child(2){animation-delay:-2.3s}.do:nth-child(3){animation-delay:-4.6s}
+.do-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.do h3{font-family:var(--f-display);font-weight:500;font-size:1.45rem}
+.do .k{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.12em;color:var(--steel);text-transform:uppercase}
+.do p{color:var(--fg-2);font-size:.92rem;margin-top:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chips span,.tags span{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.04em;color:var(--steel);border:1px solid rgba(143,179,207,.22);padding:3px 9px;border-radius:999px}
+.chips span{color:var(--gold-2);border-color:var(--line)}
 
-/* 3D HOVER TILT & RADIAL GLOW */
-.tilt{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(0);transition:transform .5s cubic-bezier(.2,.7,.2,1),border-color .3s,box-shadow .3s;transform-style:preserve-3d;will-change:transform;position:relative}
-.tilt.hot{transition:transform .08s linear,border-color .3s}
-.tilt::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(420px circle at var(--gx,50%) var(--gy,0%),rgba(239,211,143,.11),transparent 45%);opacity:0;transition:opacity .3s}
-.tilt:hover{border-color:var(--line);box-shadow:0 18px 40px -18px rgba(0,0,0,.7)}
+/* TIMELINE */
+.tl{position:relative;max-width:1080px;margin-inline:auto}
+.tl-line{position:absolute;left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%);background:var(--line-2);border-radius:2px}
+.tl-fill{position:absolute;left:0;top:0;width:100%;height:100%;transform-origin:top;transform:scaleY(0);background:linear-gradient(var(--gold),var(--gold-2),var(--steel));box-shadow:0 0 16px rgba(214,178,94,.6);border-radius:2px}
+.tl-row{display:grid;grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr);align-items:start;margin-bottom:56px}
+.tl-row:last-child{margin-bottom:0}
+.tl-meta{text-align:right;padding-top:2px}
+.tl-year{font-family:var(--f-display);font-size:clamp(2rem,3.4vw,2.7rem);line-height:1;color:var(--fg)}
+.tl-role{font-family:var(--f-display);font-style:italic;font-size:1.35rem;color:var(--gold-2);margin-top:6px}
+.tl-org{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--steel);margin-top:4px}
+.tl-node{justify-self:center;width:18px;height:18px;margin-top:10px;border-radius:50%;background:var(--ink);border:3px solid var(--gold);box-shadow:0 0 0 6px rgba(214,178,94,.08),0 0 18px rgba(214,178,94,.5);transition:transform .3s,background .3s;position:relative;z-index:1}
+.tl-row:hover .tl-node,.tl-row.lit .tl-node{background:var(--gold);transform:scale(1.25)}
+.tl-body{padding:22px 24px}
+.tl-body ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.tl-body li{position:relative;padding-left:18px;color:var(--fg-2);font-size:.93rem}
+.tl-body li::before{content:"▹";position:absolute;left:0;color:var(--gold)}
+.tl-body li strong{color:var(--fg);font-weight:500}
+.tl-row.flip .tl-meta{order:3;text-align:left}
+.tl-row.flip .tl-node{order:2}
+.tl-row.flip .tl-body{order:1}
+
+/* TILT */
+.tilt{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(0);transition:transform .6s cubic-bezier(.2,.7,.2,1),opacity .9s cubic-bezier(.2,.7,.2,1),border-color .3s,box-shadow .3s;transform-style:preserve-3d;position:relative}
+.tilt.hot{transition:transform .08s linear,border-color .3s,box-shadow .3s}
+.tilt::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(420px circle at var(--gx,50%) var(--gy,0%),rgba(239,211,143,.1),transparent 45%);opacity:0;transition:opacity .3s}
+.tilt:hover{border-color:var(--line);box-shadow:0 24px 50px -20px rgba(0,0,0,.7)}
 .tilt:hover::after{opacity:1}
+.tilt .lift{transform:translateZ(28px)}
 
 /* PROJECTS */
 .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
-.filters button{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-2);background:var(--panel);border:1px solid var(--line-2);padding:9px 15px;border-radius:999px;cursor:pointer;transition:all .25s}
+.filters button{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-2);background:transparent;border:1px solid var(--line-2);padding:9px 15px;border-radius:999px;cursor:pointer;transition:all .25s}
 .filters button:hover{border-color:var(--line);color:var(--fg)}
-.filters button[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--ink);font-weight:500}
-.filters .count{opacity:.65;margin-left:6px}
+.filters button[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.filters .count{opacity:.6;margin-left:6px}
 .grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px}
 .proj{grid-column:span 2;padding:24px;display:flex;flex-direction:column;gap:12px;min-width:0}
-.proj.big{grid-column:span 3;padding:30px}
-.proj .meta{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;font-family:var(--f-mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-3)}
+.proj.big{grid-column:span 3;padding:28px}
+.proj.show{animation:pop .5s cubic-bezier(.2,.8,.2,1) backwards}
+.p-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.num{font-family:var(--f-display);font-size:2.4rem;line-height:.9;color:transparent;-webkit-text-stroke:1px rgba(214,178,94,.55);transition:color .3s}
+.proj:hover .num{color:var(--gold)}
+.meta{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px 10px;align-items:center;font-family:var(--f-mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-3);text-align:right}
 .badge{color:var(--live);border:1px solid rgba(127,200,160,.35);padding:2px 8px;border-radius:999px;letter-spacing:.1em}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 0;padding:14px;border-radius:10px;background:radial-gradient(120% 140% at 0% 0%,rgba(214,178,94,.09),rgba(11,13,18,.6) 60%);border:1px solid var(--line-2);overflow:hidden;position:relative}
+.flow::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.05) 50%,transparent 65%);transform:translateX(-100%);transition:transform .8s}
+.proj:hover .flow::after{transform:translateX(100%)}
+.fn{font-family:var(--f-mono);font-size:.64rem;letter-spacing:.03em;color:var(--fg);background:rgba(16,19,26,.9);border:1px solid var(--line);padding:4px 8px;border-radius:6px;white-space:nowrap}
+.fn:last-child{border-color:var(--gold);color:var(--gold-2)}
+.fc{position:relative;width:22px;height:1px;background:rgba(214,178,94,.35);flex:none}
+.fc::after{content:"";position:absolute;top:-2px;left:0;width:5px;height:5px;border-radius:50%;background:var(--gold-2);box-shadow:0 0 8px var(--gold);animation:flow 1.6s linear infinite;animation-delay:var(--dl,0s)}
 .proj h3{font-family:var(--f-display);font-weight:500;font-size:1.4rem;line-height:1.2}
-.proj.big h3{font-size:clamp(1.6rem,2.4vw,2rem)}
+.proj.big h3{font-size:clamp(1.55rem,2.3vw,1.95rem)}
 .proj p{color:var(--fg-2);font-size:.93rem}
-.proj .fig{font-family:var(--f-display);font-size:2.6rem;line-height:1;color:var(--gold-2)}
-.proj .fig small{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;color:var(--fg-3);margin-left:8px;text-transform:uppercase}
+.fig{font-family:var(--f-display);font-size:2.4rem;line-height:1;color:var(--gold-2)}
+.fig small{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;color:var(--fg-3);margin-left:8px;text-transform:uppercase}
 .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:6px}
-.tags span{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.04em;color:var(--steel);border:1px solid rgba(143,179,207,.22);padding:3px 9px;border-radius:999px}
 
-/* STACK & 3D ORB */
-.stack{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:36px;align-items:center}
-.orb-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
-.orb{position:relative;width:100%;max-width:460px;aspect-ratio:1;margin-inline:auto;cursor:grab;touch-action:pan-y;user-select:none}
-.orb span{position:absolute;left:50%;top:50%;font-family:var(--f-mono);font-size:.8rem;white-space:nowrap;color:var(--gold-2);will-change:transform,opacity;padding:3px 8px;border-radius:999px;background:rgba(11,13,18,.55);border:1px solid rgba(214,178,94,.16)}
-.orb::before{content:"";position:absolute;inset:12%;border-radius:50%;border:1px dashed var(--line);opacity:.65;animation:spinSlow 38s linear infinite}
-.orb::after{content:"";position:absolute;inset:26%;border-radius:50%;border:1px solid rgba(143,179,207,.14)}
-.orb-caption{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-3)}
+/* STACK */
+.orbs{position:relative;height:clamp(220px,32vw,320px);margin-bottom:28px}
+.orbs canvas{position:absolute;inset:0;width:100%;height:100%}
+.stack{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:36px;align-items:center}
+.orb{position:relative;width:100%;max-width:440px;aspect-ratio:1;margin-inline:auto;cursor:grab;touch-action:pan-y;user-select:none}
+.orb span{position:absolute;left:50%;top:50%;font-family:var(--f-mono);font-size:.8rem;white-space:nowrap;color:var(--gold-2);will-change:transform,opacity}
+.orb::before{content:"";position:absolute;inset:14%;border-radius:50%;border:1px dashed var(--line);animation:spin2 40s linear infinite}
+.orb::after{content:"";position:absolute;inset:30%;border-radius:50%;background:radial-gradient(circle,rgba(214,178,94,.12),transparent 70%)}
 .groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .group{padding:18px 20px}
 .group h3{font-family:var(--f-mono);font-size:.68rem;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
 .group p{font-size:.9rem;color:var(--fg-2);line-height:1.6}
+.hint{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-3);text-align:center;margin-top:8px}
 
-/* CREDENTIALS & EDUCATION */
+/* CREDENTIALS */
 .creds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .cred{padding:22px 22px 20px;display:flex;flex-direction:column;gap:8px}
-.cred .k{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.cred .k{display:flex;justify-content:space-between;gap:8px;font-family:var(--f-mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.cred .k span{color:var(--steel)}
 .cred h3{font-family:var(--f-body);font-weight:500;font-size:1rem;line-height:1.4}
 .cred p{font-size:.86rem;color:var(--fg-3)}
-.cred.new{border-color:var(--line)}
-.cred.new .k::after{content:"2026 · Certified";margin-left:10px;color:var(--live);border:1px solid rgba(127,200,160,.35);padding:1px 7px;border-radius:999px;letter-spacing:.1em}
-.edu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:24px}
+.cred.feat{border-color:var(--line);background:linear-gradient(145deg,rgba(214,178,94,.12),var(--panel) 55%)}
+.cred.feat .seal{position:absolute;right:18px;bottom:16px;width:44px;height:44px;border-radius:50%;border:1px dashed rgba(214,178,94,.5);display:grid;place-items:center;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.08em;color:var(--gold);animation:spin2 18s linear infinite}
+.cred.feat p{padding-right:52px}
+.edu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .edu .card{padding:28px;display:flex;flex-direction:column;gap:8px}
 .edu h3{font-family:var(--f-display);font-weight:500;font-size:1.6rem;line-height:1.15}
 .edu .school{color:var(--fg-2)}
-.edu .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.edu .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
 .pill{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;color:var(--gold-2);border:1px solid var(--line);padding:4px 10px;border-radius:999px}
+.when{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;color:var(--gold);text-transform:uppercase}
 .sub-h{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:56px 0 18px}
 
 /* CONTACT */
 .contact{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:40px;align-items:end}
-.contact h2{font-family:var(--f-display);font-weight:400;font-size:clamp(2.6rem,6vw,4.6rem);line-height:1}
+.contact h2{font-family:var(--f-display);font-weight:400;font-size:clamp(2.6rem,6vw,4.6rem);line-height:1;margin-top:14px}
 .contact h2 em{color:var(--gold);font-style:italic;font-weight:300}
-.contact p{color:var(--fg-2);margin-top:18px;max-width:34em}
+.contact p{color:var(--fg-2);margin-top:18px;max-width:32em}
 .email{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:28px}
 .email a{font-family:var(--f-display);font-style:italic;font-size:clamp(1.5rem,3.4vw,2.2rem);color:var(--gold-2);text-decoration:none;border-bottom:1px solid var(--line);word-break:break-all}
 .email a:hover{border-color:var(--gold)}
 .copy{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;background:transparent;color:var(--fg-2);border:1px solid var(--line-2);padding:8px 12px;border-radius:999px;cursor:pointer}
 .copy:hover{color:var(--fg);border-color:var(--line)}
-.links{display:flex;flex-direction:column;gap:0}
+.links{display:flex;flex-direction:column}
 .links a{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 4px;border-top:1px solid var(--line-2);text-decoration:none;color:var(--fg);transition:color .25s,padding .25s}
 .links a:last-child{border-bottom:1px solid var(--line-2)}
-.links a:hover{color:var(--gold-2);padding-left:10px}
+.links a:hover{color:var(--gold-2);padding-left:12px}
 .links small{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.1em;color:var(--fg-3);text-transform:uppercase}
 
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:28px 36px;border-top:1px solid var(--line-2);font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;color:var(--fg-3)}
 
 @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes drop{from{opacity:0;transform:perspective(600px) rotateX(-80deg) translateY(30%)}to{opacity:1;transform:none}}
 @keyframes ping{0%{box-shadow:0 0 0 0 rgba(127,200,160,.55)}70%{box-shadow:0 0 0 9px rgba(127,200,160,0)}100%{box-shadow:0 0 0 0 rgba(127,200,160,0)}}
-@keyframes spinSlow{to{transform:rotate(360deg)}}
+@keyframes blink{50%{opacity:0}}
+@keyframes cue{0%,100%{opacity:.35;transform:scaleY(.7);transform-origin:top}50%{opacity:1;transform:scaleY(1)}}
+@keyframes mq{to{transform:translateX(-50%)}}
+@keyframes spin{to{--ang:360deg}}
+@keyframes spin2{to{transform:rotate(360deg)}}
+@keyframes flow{from{left:-4px;opacity:0}20%{opacity:1}80%{opacity:1}to{left:22px;opacity:0}}
+@keyframes pop{from{opacity:0;transform:perspective(900px) rotateY(-18deg) translateY(16px)}to{opacity:1;transform:none}}
 
-@media (max-width:1020px){
+@media (max-width:1100px){.rail{display:none}}
+@media (max-width:1000px){
   .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .proj,.proj.big{grid-column:span 1}
+  .proj{grid-column:span 1}
   .proj.big{grid-column:span 2}
   .creds{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .stack{grid-template-columns:minmax(0,1fr)}
-  .mc{grid-template-columns:minmax(0,1fr)}
-  .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .impact-strip{grid-template-columns:minmax(0,1fr)}
+  .stack,.mc{grid-template-columns:minmax(0,1fr)}
+  .what{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr)}
+  .what-stage{display:none}
 }
 @media (max-width:820px){
   .nav-links{display:none;position:absolute;top:68px;left:0;right:0;flex-direction:column;gap:0;background:var(--ink);border-bottom:1px solid var(--line);padding:8px var(--gutter-r) 16px var(--gutter-l)}
@@ -237,13 +308,18 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
   .nav-links a{display:block;padding:14px 0;border-top:1px solid var(--line-2)}
   .nav-links a::after{display:none}
   .menu-btn{display:inline-block}
-  .hero .wrap{grid-template-columns:minmax(0,1fr);min-height:auto;padding-block:132px 56px}
-  .hero-side{justify-self:start;text-align:left;max-width:100%}
-  .shape-dock{justify-content:flex-start}
+  .hero .wrap{grid-template-columns:minmax(0,1fr);min-height:auto;padding-block:124px 72px}
+  .hero-side,.scroll-cue{display:none}
   .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .stat:nth-child(odd){border-left:0}
+  .stat:nth-child(3){border-left:0}
   .stat:nth-child(n+3){border-top:1px solid var(--line-2)}
-  .engagements,.now,.edu,.contact{grid-template-columns:minmax(0,1fr)}
+  .edu,.contact,.what{grid-template-columns:minmax(0,1fr)}
+  .tl-line{left:9px;transform:none}
+  .tl-row,.tl-row.flip{grid-template-columns:20px minmax(0,1fr);gap:8px 18px;margin-bottom:40px}
+  .tl-row .tl-node,.tl-row.flip .tl-node{grid-column:1;grid-row:1;order:0;margin-top:8px}
+  .tl-row .tl-meta,.tl-row.flip .tl-meta{grid-column:2;grid-row:1;order:0;text-align:left}
+  .tl-row .tl-body,.tl-row.flip .tl-body{grid-column:2;grid-row:2;order:0}
+  .hud{display:none}
 }
 @media (max-width:600px){
   .grid,.creds,.groups{grid-template-columns:minmax(0,1fr)}
@@ -251,331 +327,318 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
   .mc-row{grid-template-columns:minmax(0,1fr);gap:4px;padding:16px 20px}
   .mc-side{padding:22px 20px}
   .stat{padding:20px 16px}
+  .marquee{transform:perspective(700px) rotateX(14deg) rotateZ(-2deg)}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .rise,.status i,.orb::before{animation:none}
-  .tilt,.tilt.hot{transition:none;transform:none}
+  *,*::before,*::after{animation:none!important}
+  .tilt,.tilt.hot,.rv{transition:none;transform:none}
+  .rv.pre{opacity:1;transform:none}
+  .mq-row{flex-wrap:wrap;width:auto}
 }
 </style>
 </head>
 <body>
 <canvas id="scene" aria-hidden="true"></canvas>
+<div class="spot" id="spot" aria-hidden="true"></div>
 
 <header class="nav" id="nav">
   <div class="wrap">
-    <a class="logo" href="#top" aria-label="Back to top">
-      JGK <span class="logo-badge">ML · MLOps · XAI</span>
-    </a>
+    <a class="logo" href="#top" aria-label="Back to top"><i></i>JGK</a>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu</button>
     <ul class="nav-links" id="navLinks">
       <li><a href="#about">About</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#projects">Projects</a></li>
+      <li><a href="#what">What I do</a></li>
+      <li><a href="#journey">Journey</a></li>
+      <li><a href="#projects">Work (14)</a></li>
       <li><a href="#stack">Stack</a></li>
-      <li><a href="#credentials">Credentials</a></li>
+      <li><a href="#credentials">Certs</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </div>
+  <div class="progress" id="progress"></div>
 </header>
+
+<nav class="rail" aria-label="Quick links">
+  <a href="https://github.com/Jeevjk" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub">GH</a>
+  <a href="https://www.linkedin.com/in/jeeva-ganesh-kumar-b-8b3832217" target="_blank" rel="noopener" title="LinkedIn" aria-label="LinkedIn">in</a>
+  <a href="#contact" title="Email" aria-label="Email">@</a>
+</nav>
+<a class="hud" href="#credentials"><i></i>AWS &amp; Microsoft certified · 2026</a>
 
 <main>
 
-<section class="hero" id="top" data-shape="sphere" style="padding-block:0">
+<section class="hero" id="top" data-shape="sphere" style="padding-block:0;position:relative">
   <div class="wrap">
     <div>
-      <div class="status-row rise d1">
-        <div class="status"><i></i>Open to ML, AI &amp; Data roles in Ireland</div>
-        <div class="status cert-pill">AWS Certified ML · Microsoft Certified MLOps</div>
+      <div class="status rise d1"><i></i>Open to AI and data roles in Ireland</div>
+      <h1 aria-label="Jeeva Ganesh Kumar"><span class="split" aria-hidden="true">Jeeva</span> <em class="split" aria-hidden="true">Ganesh Kumar</em></h1>
+      <div class="roles rise d3" aria-live="off">&gt; <b id="role">Machine Learning Engineer</b><span class="caret"></span></div>
+      <div class="badges rise d4">
+        <span class="bdg">★ AWS Certified ML Engineer – Associate</span>
+        <span class="bdg">★ Microsoft Certified MLOps Engineer – Associate</span>
+        <span class="bdg alt">MSc Human-Centred AI · TU Dublin</span>
       </div>
-      <h1 class="rise d2">Jeeva <em>Ganesh Kumar</em></h1>
-      <p class="hero-lede rise d3">
-        I build machine learning that people can check. <strong>Explainable deep learning, evaluated AI agents, and MLOps pipelines that actually deploy to production endpoints.</strong> AWS &amp; Microsoft Certified Machine Learning Engineer completing an MSc in Human-Centred AI at TU Dublin, after a year shipping enterprise AI at Protiviti.
-      </p>
-      <div class="cta rise d4">
-        <a class="btn btn-gold" href="#projects">See the work (15)</a>
-        <a class="btn btn-ghost" href="https://github.com/Jeevjk" target="_blank" rel="noopener">GitHub ↗</a>
-        <a class="btn btn-ghost" href="https://www.linkedin.com/in/jeeva-ganesh-kumar-b-8b3832217" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <p class="hero-lede rise d5">I build machine learning that people can check. <strong>Explainable models, evaluated AI agents and pipelines that actually deploy.</strong> Currently finishing my MSc, after a year shipping enterprise AI at Protiviti.</p>
+      <div class="cta rise d6">
+        <a class="btn btn-gold mag" href="#projects">Explore 14 projects</a>
+        <a class="btn btn-ghost mag" href="#contact">Let's connect</a>
       </div>
     </div>
-    <div class="hero-side rise d5" aria-label="3D Point Cloud Controls">
-      <span id="ptCount">1,800</span> 3D nodes &amp; synaptic mesh · vanilla WebGL-grade canvas<br>
-      active manifold: <b id="shapeName">Fibonacci sphere</b> · morphs on scroll or click:
-      <div class="shape-dock" id="shapeDock">
-        <button type="button" class="shape-btn active" data-target="sphere">Sphere</button>
-        <button type="button" class="shape-btn" data-target="knot">Torus Knot</button>
-        <button type="button" class="shape-btn" data-target="net">Neural Net</button>
-        <button type="button" class="shape-btn" data-target="torus">Torus</button>
-        <button type="button" class="shape-btn" data-target="helix">DNA Helix</button>
-        <button type="button" class="shape-btn" data-target="cube">Tesseract</button>
-        <button type="button" class="shape-btn" data-target="lorenz">Attractor</button>
-      </div>
+    <div class="hero-side rise d6" aria-hidden="true">
+      <span id="ptCount">1,800</span> points · rendered on a plain canvas<br>
+      shape now: <b id="shapeName">sphere</b> · it changes as you scroll
     </div>
   </div>
+  <div class="scroll-cue" aria-hidden="true"><span>Scroll</span><i></i></div>
 </section>
 
 <div class="stats-band">
   <div class="wrap stats" role="list">
-    <div class="stat" role="listitem"><b>95.5%</b><span>accuracy from a glass-box EBM on sleep-disorder risk</span></div>
-    <div class="stat" role="listitem"><b>+15%</b><span>production text-classification accuracy lift at Protiviti</span></div>
-    <div class="stat" role="listitem"><b>100+</b><span>structured LLM evaluation scenarios &amp; >50% manual effort saved</span></div>
-    <div class="stat" role="listitem"><b>30+</b><span>credentials incl. AWS ML Engineer &amp; Microsoft MLOps Associate</span></div>
-    <div class="stat" role="listitem"><b>8.09</b><span>B.Tech CGPA in Artificial Intelligence &amp; Data Science</span></div>
+    <div class="stat" role="listitem"><b data-count="95.5" data-dec="1" data-suf="%">95.5%</b><span>accuracy from a glass-box EBM on sleep-disorder risk</span></div>
+    <div class="stat" role="listitem"><b data-count="4">4</b><span>named enterprise AI engagements at Protiviti</span></div>
+    <div class="stat" role="listitem"><b data-count="30" data-suf="+">30+</b><span>certifications, including AWS and Microsoft associate ML</span></div>
+    <div class="stat" role="listitem"><b data-count="8.09" data-dec="2">8.09</b><span>B.Tech CGPA in AI and Data Science</span></div>
   </div>
 </div>
 
+<div class="mq-clip"><div class="marquee" aria-hidden="true">
+  <div class="mq-row" id="mq1"></div>
+  <div class="mq-row rev" id="mq2"></div>
+</div></div>
+
 <section id="about" data-shape="knot">
   <div class="wrap">
-    <div class="head">
+    <div class="head rv">
       <span class="eyebrow">Model card</span>
       <h2>The short version, <em>documented properly</em></h2>
       <p>Every model I ship gets a model card, so it seemed fair to write one for myself.</p>
     </div>
     <div class="mc">
-      <dl class="card mc-main">
-        <div class="mc-row"><dt>Intended use</dt><dd>Machine Learning Engineer, MLOps Engineer, AI Engineer and Data Engineering roles — especially where the system has to be <strong>explainable, fair, and reliably deployed</strong> to production endpoints.</dd></div>
-        <div class="mc-row"><dt>Training data</dt><dd><strong>B.Tech in AI &amp; Data Science</strong> (KGISL, CGPA 8.09/10), a year as a <strong>Technology Consultant — AI at Protiviti</strong> shipping models across banking, risk and compliance, and now an <strong>MSc in Human-Centred AI</strong> at TU Dublin (Tallaght).</dd></div>
-        <div class="mc-row"><dt>Certifications</dt><dd><strong>AWS Certified Machine Learning Engineer – Associate (2026)</strong> and <strong>Microsoft Certified Machine Learning Operations (MLOps) Engineer – Associate (2026)</strong>, backed by Azure AI Essentials, Oracle OCI AI Foundations, and Securiti AI Governance.</dd></div>
-        <div class="mc-row"><dt>Strengths</dt><dd>End-to-end model lifecycle: data ingestion, leakage checks, cohort bias analysis, PyTorch/TensorFlow/scikit-learn training, glass-box explainability (EBM, SHAP, LIME, saliency maps), and production endpoints via Azure ML, AWS, Docker, Kubernetes, and REST APIs.</dd></div>
-        <div class="mc-row"><dt>How I build</dt><dd>Day to day I pair rigorous software engineering (Git, Linux, pytest, peer code review) with AI coding agents (Claude Code, GitHub Copilot, Codex): writing the spec, reviewing what the agent produces, and keeping tests green before anything merges.</dd></div>
-        <div class="mc-row"><dt>Evaluation</dt><dd><strong>95.5% accuracy</strong> from a glass-box EBM on 100k clinical records; <strong>~15% production accuracy lift</strong> on enterprise text classification; <strong>100+ LLM evaluation benchmarks</strong> cutting manual effort by <strong>over 50%</strong>.</dd></div>
+      <dl class="card mc-main rv">
+        <div class="mc-row"><dt>Intended use</dt><dd>Machine learning, MLOps, AI and data engineering roles, especially where the system has to be <strong>explainable, fair and safe</strong> for the people it affects.</dd></div>
+        <div class="mc-row"><dt>Training data</dt><dd><strong>B.Tech in AI &amp; Data Science</strong> with distinction (KGISL, CGPA 8.09), a year as a <strong>Technology Consultant at Protiviti</strong> on banking, risk and compliance AI, and now an <strong>MSc in Human-Centred AI</strong> at TU Dublin.</dd></div>
+        <div class="mc-row"><dt>Certified on</dt><dd><strong>AWS Machine Learning Engineer – Associate</strong> and <strong>Microsoft MLOps Engineer – Associate</strong>, so models go from notebook to monitored endpoint on either cloud.</dd></div>
+        <div class="mc-row"><dt>Strengths</dt><dd>Turning messy data into models that hold up: leakage checks, bias analysis across cohorts, SHAP and LIME explanations, then Docker, Kubernetes and CI/CD to get them running.</dd></div>
+        <div class="mc-row"><dt>How I build</dt><dd>Day to day I work with AI coding agents (Claude Code, GitHub Copilot, Codex): writing the spec, reviewing what the agent produces, and keeping tests green before anything merges.</dd></div>
+        <div class="mc-row"><dt>Limitations</dt><dd>Irish is still at beginner level. Working on it.</dd></div>
       </dl>
-      <aside class="card mc-side">
+      <aside class="card mc-side rv" id="langs">
         <div>
           <h3>Languages</h3>
           <div class="langs">
-            <div class="lang"><span>English</span><small>Fluent · IELTS 7.5 (C1)</small><div class="meter"><i style="width:95%"></i></div></div>
-            <div class="lang"><span>Tamil</span><small>Native</small><div class="meter"><i style="width:100%"></i></div></div>
-            <div class="lang"><span>French</span><small>Intermediate</small><div class="meter"><i style="width:55%"></i></div></div>
-            <div class="lang"><span>Irish</span><small>Beginner</small><div class="meter"><i style="width:18%"></i></div></div>
+            <div class="lang"><span>English</span><small>Fluent · IELTS 7.5 (C1)</small><div class="meter"><i style="--w:95%"></i></div></div>
+            <div class="lang"><span>Tamil</span><small>Native</small><div class="meter"><i style="--w:100%"></i></div></div>
+            <div class="lang"><span>French</span><small>Intermediate</small><div class="meter"><i style="--w:55%"></i></div></div>
+            <div class="lang"><span>Irish</span><small>Beginner</small><div class="meter"><i style="--w:18%"></i></div></div>
           </div>
         </div>
         <div>
           <h3>Based in</h3>
-          <div class="where">
-            <span>Galway &amp; Dublin, Ireland</span>
-            <span style="color:var(--fg-3)">Open to hybrid, remote, or on-site engineering roles across Ireland</span>
-          </div>
+          <div class="where"><span>Dublin and Galway, Ireland</span><span style="color:var(--fg-3)">Open to hybrid or on-site work anywhere in Ireland</span></div>
         </div>
       </aside>
     </div>
   </div>
 </section>
 
-<section id="experience" data-shape="net">
+<section id="what" data-shape="net">
+  <div class="wrap what">
+    <div class="what-copy rv">
+      <span class="eyebrow">Capabilities</span>
+      <h2 class="big-title" style="margin-top:14px">What <em>I do</em></h2>
+      <p>The full lifecycle of a model: the data, the model, the explanation, the deployment, and the evaluation that proves it works.</p>
+    </div>
+    <div class="what-stage" aria-hidden="true"></div>
+    <div class="do-list">
+      <article class="do rv">
+        <div class="do-top"><h3>ML &amp; deep learning</h3><span class="k">PyTorch · TensorFlow</span></div>
+        <p>Interpretable models first. Computer vision, NLP and tabular ML, tuned properly and explained with SHAP, LIME and saliency maps.</p>
+        <div class="chips"><span>PyTorch</span><span>TensorFlow</span><span>Keras</span><span>scikit-learn</span><span>XGBoost</span><span>EBM</span></div>
+      </article>
+      <article class="do rv">
+        <div class="do-top"><h3>MLOps &amp; cloud</h3><span class="k">AWS · Azure</span></div>
+        <p>Models packaged, served and monitored. Containers, Kubernetes, CI/CD and model serving on both AWS and Azure.</p>
+        <div class="chips"><span>Docker</span><span>Kubernetes</span><span>GitHub Actions</span><span>TF Serving</span><span>Azure ML</span><span>OpenVINO</span></div>
+      </article>
+      <article class="do rv">
+        <div class="do-top"><h3>LLMs, agents &amp; evaluation</h3><span class="k">GenAI · GRC</span></div>
+        <p>Prompt-chained LLM workflows and RAG, plus the testing that matters: agent performance, risk and heuristic evaluation.</p>
+        <div class="chips"><span>RAG</span><span>LangChain</span><span>Prompt chaining</span><span>Agent evaluation</span><span>AI governance</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="journey" data-shape="helix">
   <div class="wrap">
-    <div class="head">
-      <span class="eyebrow">Experience</span>
-      <h2>Enterprise AI, <em>for real clients</em></h2>
-      <p>Full-lifecycle ML engineering and four named enterprise engagements across banking, risk, and compliance at Protiviti.</p>
+    <div class="head rv">
+      <span class="eyebrow">Journey</span>
+      <h2>Career and <em>academic</em> timeline</h2>
+      <p>The line fills in as you scroll.</p>
     </div>
-    <div class="role">
-      <div class="role-top">
-        <div><h3>Technology Consultant — Artificial Intelligence</h3><div class="org">Protiviti India Member Firm</div></div>
-        <div class="when">Jan 2025 – Dec 2025</div>
+    <div class="tl" id="tl">
+      <div class="tl-line"><div class="tl-fill" id="tlFill"></div></div>
+
+      <div class="tl-row rv">
+        <div class="tl-meta"><div class="tl-year">2026 – 27</div><div class="tl-role">MSc Human-Centred AI</div><div class="tl-org">TU Dublin, Tallaght · Now</div></div>
+        <div class="tl-node"></div>
+        <div class="card tl-body"><ul>
+          <li>Coursework in <strong>deep learning, AI ethics, AI risk management</strong> and society and AI.</li>
+          <li>Research project predicting <strong>18-month waiting list breaches</strong> in Irish hospitals from NTPF open data, with a cohort bias analysis.</li>
+          <li>Group project on <strong>explainable sleep-disorder detection</strong> where a glass-box model reached 95.5%.</li>
+        </ul></div>
       </div>
 
-      <!-- Quantitative ML Engineering Highlights from New CV -->
-      <div class="impact-strip">
-        <div class="impact-pill">
-          <strong>~15% Accuracy Lift</strong>
-          Improved a production text-classification model's accuracy through feature engineering, error analysis, and iterative hyperparameter tuning.
-        </div>
-        <div class="impact-pill">
-          <strong>100+ LLM Eval Scenarios</strong>
-          Built and integrated LLM-based applications, designing 100+ structured evaluation benchmarks to measure and raise model quality.
-        </div>
-        <div class="impact-pill">
-          <strong>&gt;50% Effort Reduction</strong>
-          Developed Python services and REST APIs that embedded ML models directly into live client workflows in an Agile/Git/Linux team.
-        </div>
+      <div class="tl-row flip rv">
+        <div class="tl-meta"><div class="tl-year">2025</div><div class="tl-role">Technology Consultant</div><div class="tl-org">Protiviti India Member Firm · Jan – Dec</div></div>
+        <div class="tl-node"></div>
+        <div class="card tl-body"><ul>
+          <li><strong>Banks Symphony AI chatbot:</strong> designed agentic workflows and ran agent performance testing, risk assessment and heuristic evaluation.</li>
+          <li><strong>Infused AI:</strong> built an internal GRC tool with LLM orchestration and prompt chaining for risk mapping and policy alignment, and trained the team on it.</li>
+          <li><strong>AI-driven BCMS:</strong> generative and multi-modal models predicting operational disruptions, with automated workflow orchestration.</li>
+          <li><strong>Global Relay suspicious mail detection:</strong> improved the model through systematic evaluation and benchmarking, then turned results into compliance findings.</li>
+        </ul></div>
       </div>
 
-      <div class="engagements">
-        <article class="card eng tilt">
-          <span class="k">Agent evaluation · Banking</span>
-          <h4>Banks Symphony AI chatbot</h4>
-          <p>Designed agentic workflows for a banking chatbot and ran its agent performance testing, risk assessment and heuristic evaluation before client sign-off.</p>
-        </article>
-        <article class="card eng tilt">
-          <span class="k">Internal tool · GRC</span>
-          <h4>Infused AI</h4>
-          <p>Built an internal governance, risk and compliance tool that uses LLM orchestration, REST APIs, and prompt chaining to map risks and align policies. Trained the GRC team to use it.</p>
-        </article>
-        <article class="card eng tilt">
-          <span class="k">Prediction · Operations</span>
-          <h4>AI-driven BCMS</h4>
-          <p>Implemented a business continuity system that uses generative and multi-modal models to predict operational disruptions, with the response workflow automated end to end.</p>
-        </article>
-        <article class="card eng tilt">
-          <span class="k">Model tuning · Compliance</span>
-          <h4>Global Relay suspicious mail detection</h4>
-          <p>Improved a suspicious-mail detection model through systematic evaluation, feature engineering, and benchmarking, then translated the results into compliance findings for the client.</p>
-        </article>
+      <div class="tl-row rv">
+        <div class="tl-meta"><div class="tl-year">2020 – 24</div><div class="tl-role">B.Tech AI &amp; Data Science</div><div class="tl-org">KGISL Institute of Technology · CGPA 8.09</div></div>
+        <div class="tl-node"></div>
+        <div class="card tl-body"><ul>
+          <li>Graduated with distinction, focusing on neural networks, computer vision, NLP and data structures.</li>
+          <li>Built an <strong>AI wrist companion</strong> for hospital patients and a <strong>hotel review sentiment</strong> NLP pipeline.</li>
+        </ul></div>
       </div>
-      <div class="how"><span>Toolkit</span>Python (PyTorch, TensorFlow, scikit-learn, pandas) · REST APIs · hosted LLM APIs · UiPath &amp; Power Automate · SQL · Git &amp; Linux · Agile sprint reviews and stakeholder presentations</div>
-    </div>
-
-    <div class="now">
-      <article class="card eng tilt">
-        <span class="k">2026 – 2027 (Expected) · Now</span>
-        <h4>MSc Human-Centred AI, TU Dublin (Tallaght)</h4>
-        <p>Deep learning, interpretable machine learning, AI ethics, AI risk management, and society &amp; AI. Turning research methods into deployed Azure and AWS pipelines.</p>
-      </article>
-      <article class="card eng tilt">
-        <span class="k">Ongoing · Applied MLOps</span>
-        <h4>Building &amp; deploying in public</h4>
-        <p>Glass-box deep learning endpoints on Azure ML, RAG pipelines, Kubernetes (EKS) rollouts, and OpenVINO edge inference built to master production ML engineering.</p>
-      </article>
     </div>
   </div>
 </section>
 
 <section id="projects" data-shape="torus">
   <div class="wrap">
-    <div class="head">
-      <span class="eyebrow">Projects</span>
-      <h2>Selected work, <em>2022 to 2026</em></h2>
-      <p>Newest and most substantial first — combining MSc research, Azure ML production endpoints, and personal MLOps builds.</p>
+    <div class="head rv">
+      <span class="eyebrow">Work</span>
+      <h2>Selected projects, <em>2022 to now</em></h2>
+      <p>Each card shows the pipeline behind the project. Filter by the kind of work you care about.</p>
     </div>
-    <div class="filters" role="group" aria-label="Filter projects">
+    <div class="filters rv" role="group" aria-label="Filter projects">
       <button type="button" data-f="all" aria-pressed="true">All<span class="count"></span></button>
       <button type="button" data-f="ml" aria-pressed="false">ML &amp; XAI<span class="count"></span></button>
       <button type="button" data-f="llm" aria-pressed="false">LLMs &amp; agents<span class="count"></span></button>
-      <button type="button" data-f="ops" aria-pressed="false">MLOps &amp; Cloud<span class="count"></span></button>
+      <button type="button" data-f="ops" aria-pressed="false">MLOps &amp; DevOps<span class="count"></span></button>
       <button type="button" data-f="research" aria-pressed="false">Research &amp; ethics<span class="count"></span></button>
     </div>
     <div class="grid" id="grid">
-      <article class="card proj big tilt" data-cat="ml ops">
-        <div class="meta"><span>2026 · Azure ML Production Pipeline</span><span class="badge">Deployed Endpoint</span></div>
-        <h3>Image classification — glass-box deep learning on Azure ML</h3>
-        <p>Built an end-to-end image-classification pipeline on Azure ML from raw data ingestion to a deployed real-time inference endpoint, using an interpretable (glass-box) deep learning architecture for transparent, auditable predictions.</p>
-        <div class="tags"><span>Python</span><span>Azure ML</span><span>Deep Learning</span><span>Glass-Box AI</span><span>Production Endpoint</span></div>
-      </article>
-
-      <article class="card proj big tilt" data-cat="ml">
-        <div class="meta"><span>MSc · Emerging Tech · Team of 4</span></div>
-        <h3>Sleep disorder detection with explainable AI</h3>
-        <div class="fig">95.5%<small>EBM accuracy</small></div>
-        <p>100,000 records, 32 variables, four risk classes. A glass-box Explainable Boosting Machine beat a decision tree, logistic regression and two neural networks, with SHAP and LIME explaining every model. Also covered drift, transfer learning and quantisation.</p>
-        <div class="tags"><span>EBM</span><span>SHAP</span><span>LIME</span><span>Keras</span><span>Quantisation</span></div>
-      </article>
-
-      <article class="card proj big tilt" data-cat="ml research">
-        <div class="meta"><span>MSc · ML &amp; Research Methods</span><span class="badge">In progress</span></div>
+      <article class="card proj big tilt rv" data-cat="ml research" data-flow="NTPF CSVs|lagged features|XGBoost · RF · LR|breach risk">
+        <div class="p-top"><span class="num"></span><div class="meta"><span>MSc · ML &amp; Research Methods</span><span class="badge">In progress</span></div></div>
         <h3>Predicting 18-month waiting list breaches in Irish hospitals</h3>
         <p>Hospital-level forecasts built on NTPF open data from 2022 to 2026. Logistic Regression, Random Forest and XGBoost compared after closing a data-leakage gap with lagged features. Includes an adult vs child bias analysis and recommendations tied to the HSE Waiting List Action Plan.</p>
         <div class="tags"><span>Python</span><span>pandas</span><span>XGBoost</span><span>Random Forest</span><span>Fairness</span><span>LaTeX</span></div>
       </article>
-
-      <article class="card proj big tilt" data-cat="ml ops">
-        <div class="meta"><span>2026 · MSc Deep Learning &amp; Azure</span></div>
-        <h3>Real-time age identification CNN deployed on Azure</h3>
-        <p>Developed a real-time people age-identification system trained on UTKFace with architecture search, hyperparameter tuning, and saliency maps, processing live data streams for on-the-fly inference via Docker and TF Serving on Azure.</p>
-        <div class="tags"><span>TensorFlow</span><span>PyTorch</span><span>CNN</span><span>Saliency maps</span><span>Docker</span><span>Azure ACR / ACI</span></div>
+      <article class="card proj big tilt rv" data-cat="ml" data-flow="100k records|5 models|SHAP + LIME|EBM 95.5%">
+        <div class="p-top"><span class="num"></span><div class="meta"><span>MSc · Emerging Tech · Team of 4</span></div></div>
+        <h3>Sleep disorder detection with explainable AI</h3>
+        <div class="fig">95.5%<small>EBM accuracy</small></div>
+        <p>100,000 records, 32 variables, four risk classes. A glass-box Explainable Boosting Machine beat a decision tree, logistic regression and two neural networks. Also covered drift, transfer learning and quantisation.</p>
+        <div class="tags"><span>EBM</span><span>SHAP</span><span>LIME</span><span>Keras</span><span>Quantisation</span></div>
       </article>
-
-      <article class="card proj tilt" data-cat="llm">
-        <div class="meta"><span>Personal build</span></div>
+      <article class="card proj big tilt rv" data-cat="ml ops" data-flow="UTKFace|CNN + saliency|Docker|TF Serving on Azure">
+        <div class="p-top"><span class="num"></span><div class="meta"><span>MSc · Deep Learning</span></div></div>
+        <h3>Age prediction CNN, deployed to Azure</h3>
+        <p>A computer vision model trained on UTKFace, with architecture search, hyperparameter tuning and saliency maps to show what the network looks at. Packaged with Docker and served through TF Serving on Azure Container Instances.</p>
+        <div class="tags"><span>TensorFlow</span><span>CNN</span><span>Saliency maps</span><span>Docker</span><span>Azure ACR / ACI</span></div>
+      </article>
+      <article class="card proj big tilt rv" data-cat="llm" data-flow="documents|embeddings|retriever|LLM answer">
+        <div class="p-top"><span class="num"></span><div class="meta"><span>Personal build</span></div></div>
         <h3>Retrieval-augmented generation pipeline</h3>
-        <p>Custom Python RAG with a LangChain chain and retriever over an in-memory NumPy embedding index, running against hosted LLM APIs or local models via Ollama and Hugging Face.</p>
+        <p>Custom Python RAG with a LangChain chain and retriever over an in-memory NumPy embedding index. It runs against hosted LLM APIs or fully local models through Ollama and Hugging Face, so the same pipeline can be compared both ways.</p>
         <div class="tags"><span>RAG</span><span>LangChain</span><span>Embeddings</span><span>Ollama</span><span>Hugging Face</span></div>
       </article>
-
-      <article class="card proj tilt" data-cat="ml">
-        <div class="meta"><span>2026 · Predictive Modelling</span></div>
-        <h3>Flight price analysis &amp; airfare prediction</h3>
-        <p>Built a data-analysis and predictive model for airfare increases and passenger peaks, engineering temporal seasonality and route features in Pandas and scikit-learn to forecast price movements.</p>
-        <div class="tags"><span>Python</span><span>pandas</span><span>scikit-learn</span><span>Feature Engineering</span></div>
-      </article>
-
-      <article class="card proj tilt" data-cat="ops">
-        <div class="meta"><span>Personal build</span></div>
+      <article class="card proj tilt rv" data-cat="ops" data-flow="git push|Actions build|EKS">
+        <div class="p-top"><span class="num"></span><div class="meta"><span>Personal build</span></div></div>
         <h3>Kubernetes deploys on Amazon EKS</h3>
-        <p>GitHub Actions builds the container image and kubectl manifests roll it out to a managed AWS EKS cluster.</p>
-        <div class="tags"><span>Kubernetes</span><span>EKS</span><span>GitHub Actions</span><span>AWS</span></div>
+        <p>GitHub Actions builds the container image and kubectl manifests roll it out to a managed EKS cluster.</p>
+        <div class="tags"><span>Kubernetes</span><span>EKS</span><span>GitHub Actions</span></div>
       </article>
-
-      <article class="card proj tilt" data-cat="ops ml">
-        <div class="meta"><span>Personal build</span></div>
+      <article class="card proj tilt rv" data-cat="ops ml" data-flow="model|OpenVINO INT8|edge device">
+        <div class="p-top"><span class="num"></span><div class="meta"><span>Personal build</span></div></div>
         <h3>Edge inference with OpenVINO</h3>
         <p>Converted and quantised a model with OpenVINO, benchmarked latency and throughput, and ran it on an edge device.</p>
         <div class="tags"><span>OpenVINO</span><span>Quantisation</span><span>Benchmarking</span></div>
       </article>
-
-      <article class="card proj tilt" data-cat="research llm">
-        <div class="meta"><span>MSc · Emerging Tech · Paper</span></div>
+      <article class="card proj tilt rv" data-cat="research llm" data-flow="LLM planner|failure modes|safety layer">
+        <div class="p-top"><span class="num"></span><div class="meta"><span>MSc · Paper</span></div></div>
         <h3>Beyond Hallucinations: trustworthy AI trip planning</h3>
         <p>An ACM-format report mapping LLM failure modes in tourism to EU regulation, proposing a new "Safety and Essentials" layer.</p>
         <div class="tags"><span>LLM reliability</span><span>EU AI Act</span><span>ACM</span></div>
       </article>
-
-      <article class="card proj tilt" data-cat="ml">
-        <div class="meta"><span>MSc · Deep Learning</span></div>
+      <article class="card proj tilt rv" data-cat="ml" data-flow="bank data|NN topologies|grid search">
+        <div class="p-top"><span class="num"></span><div class="meta"><span>MSc · Deep Learning</span></div></div>
         <h3>Bank marketing neural network</h3>
         <p>Topology search, regularisation and grid search on the Bank Marketing dataset, closing with a bias check on the final model.</p>
         <div class="tags"><span>Keras</span><span>Grid search</span><span>Bias analysis</span></div>
       </article>
-
-      <article class="card proj tilt" data-cat="research">
-        <div class="meta"><span>MSc · Ethics in AI</span></div>
+      <article class="card proj tilt rv" data-cat="ml" data-flow="fares|features|peak forecast">
+        <div class="p-top"><span class="num"></span><div class="meta"><span>MSc · Data Analysis</span></div></div>
+        <h3>Flight prices and passenger peaks</h3>
+        <p>Analysed how fares change over time and predicted peak passenger periods with a baseline ML model.</p>
+        <div class="tags"><span>pandas</span><span>EDA</span><span>scikit-learn</span></div>
+      </article>
+      <article class="card proj tilt rv" data-cat="research" data-flow="HireVue|OECD principles|fixes">
+        <div class="p-top"><span class="num"></span><div class="meta"><span>MSc · Ethics in AI</span></div></div>
         <h3>HireVue under the OECD AI Principles</h3>
         <p>A research assessment of an AI hiring platform against the OECD framework, with concrete areas to improve.</p>
         <div class="tags"><span>AI ethics</span><span>OECD</span><span>Hiring AI</span></div>
       </article>
-
-      <article class="card proj tilt" data-cat="research">
-        <div class="meta"><span>MSc · AI Risks</span><span class="badge">In progress</span></div>
+      <article class="card proj tilt rv" data-cat="research" data-flow="test|red team|field test|recommend">
+        <div class="p-top"><span class="num"></span><div class="meta"><span>MSc · AI Risks</span><span class="badge">In progress</span></div></div>
         <h3>ARIA-style evaluation of a real AI system</h3>
         <p>Model testing, red teaming and field testing applied to a real-world AI case, ending in risk ratings and recommendations.</p>
         <div class="tags"><span>Red teaming</span><span>Risk management</span></div>
       </article>
-
-      <article class="card proj tilt" data-cat="ops">
-        <div class="meta"><span>Infrastructure scripting</span></div>
+      <article class="card proj tilt rv" data-cat="ops" data-flow="jump host|SSH fleet|YAML report">
+        <div class="p-top"><span class="num"></span><div class="meta"><span>Infrastructure</span></div></div>
         <h3>Linux fleet health checks</h3>
-        <p>Bash scripts that check patch versions and service status across a multi-server fleet through SSH jump hosts, reading server metadata from YAML.</p>
+        <p>Bash scripts that check patch versions and service status across a multi-server fleet through SSH jump hosts, reading metadata from YAML.</p>
         <div class="tags"><span>Bash</span><span>Linux</span><span>SSH</span><span>YAML</span></div>
       </article>
-
-      <article class="card proj tilt" data-cat="ml">
-        <div class="meta"><span>2024 · Edge Hardware ML</span></div>
-        <h3>AI-infused wrist companion for hospital patients</h3>
-        <p>Built an IoT wearable running real-time ML inference on constrained hardware (Python &amp; C) with API-driven data pipelines and an IoT Cloud UI dashboard.</p>
-        <div class="tags"><span>Python</span><span>C</span><span>Edge ML</span><span>IoT Cloud</span></div>
+      <article class="card proj tilt rv" data-cat="ml" data-flow="sensors|AI alerts|IoT Cloud UI">
+        <div class="p-top"><span class="num"></span><div class="meta"><span>2024 · B.Tech</span></div></div>
+        <h3>AI wrist companion for hospital patients</h3>
+        <p>An IoT wearable that combines real-time health monitoring with AI-generated alerts, shown through an IoT Cloud dashboard.</p>
+        <div class="tags"><span>IoT</span><span>Python</span><span>Health</span></div>
       </article>
-
-      <article class="card proj tilt" data-cat="ml">
-        <div class="meta"><span>Aug – Oct 2022 · Team of 3</span></div>
+      <article class="card proj tilt rv" data-cat="ml" data-flow="reviews|clean + vectorise|sentiment">
+        <div class="p-top"><span class="num"></span><div class="meta"><span>2022 · Team of 3</span></div></div>
         <h3>Hotel review sentiment analysis</h3>
-        <p>An NLP pipeline that ingests, cleans and classifies hotel reviews at scale, built with clean OOP design.</p>
+        <p>An NLP pipeline that ingests, cleans and classifies hotel reviews at scale, built with OOP design.</p>
         <div class="tags"><span>NLP</span><span>scikit-learn</span><span>Python</span></div>
       </article>
     </div>
   </div>
 </section>
 
-<section id="stack" data-shape="helix">
+<section id="stack" data-shape="galaxy">
   <div class="wrap">
-    <div class="head">
+    <div class="head rv">
       <span class="eyebrow">Stack</span>
       <h2>Tools I reach for, <em>grouped by job</em></h2>
-      <p>Drag across the 3D sphere to spin it. The groups on the right are the same list, organised by engineering domain.</p>
+      <p>Move your cursor over the orbs, or drag the sphere to spin it. The cards are the same list, easier to scan.</p>
     </div>
+    <div class="orbs rv" aria-hidden="true"><canvas id="orbs"></canvas></div>
     <div class="stack">
-      <div class="orb-wrap">
+      <div>
         <div class="orb" id="orb" aria-hidden="true"></div>
-        <span class="orb-caption">↻ Drag to rotate 3D skill sphere</span>
+        <div class="hint">Drag to spin</div>
       </div>
       <div class="groups">
-        <div class="card group"><h3>Languages</h3><p>Python (Advanced), SQL, C / C++, Java, JavaScript, HTML, CSS, Bash</p></div>
-        <div class="card group"><h3>ML &amp; Deep Learning</h3><p>PyTorch, TensorFlow, Keras, scikit-learn, XGBoost, CNNs, neural networks, NLP, computer vision, pandas, NumPy</p></div>
-        <div class="card group"><h3>Explainability &amp; fairness</h3><p>SHAP, LIME, Explainable Boosting Machines (Glass-Box AI), saliency maps, cohort bias analysis</p></div>
-        <div class="card group"><h3>LLMs &amp; agents</h3><p>RAG, LangChain, prompt chaining, 100+ scenario agent evaluation, Ollama, Hugging Face, Claude Code, Copilot</p></div>
-        <div class="card group"><h3>MLOps &amp; Cloud</h3><p>AWS (Certified ML), Azure ML &amp; MLOps (Certified), Oracle OCI, Docker, Kubernetes (EKS), GitHub Actions, TF Serving, OpenVINO, REST APIs, Linux</p></div>
-        <div class="card group"><h3>Data &amp; automation</h3><p>ETL pipelines, feature engineering, hyperparameter tuning, Snowflake, Databricks, Azure Data Factory, Power BI, Power Automate, UiPath</p></div>
-        <div class="card group"><h3>Software engineering</h3><p>FastAPI, Flask, React, REST endpoints, pytest, TDD, Git/GitHub, OOP, design patterns</p></div>
-        <div class="card group"><h3>Ways of working</h3><p>Agile &amp; Scrum, peer code review, UX research, heuristic evaluation, Figma, GDPR-compliant governance</p></div>
+        <div class="card group tilt rv"><h3>Languages</h3><p>Python, SQL, JavaScript, Java, C, HTML, CSS, Bash</p></div>
+        <div class="card group tilt rv"><h3>Machine learning</h3><p>PyTorch, TensorFlow, Keras, scikit-learn, XGBoost, CNNs, NLP, pandas, NumPy</p></div>
+        <div class="card group tilt rv"><h3>Explainability &amp; fairness</h3><p>SHAP, LIME, Explainable Boosting Machines, saliency maps, cohort bias analysis</p></div>
+        <div class="card group tilt rv"><h3>LLMs &amp; agents</h3><p>RAG, LangChain, prompt chaining, agent evaluation, Ollama, Hugging Face, Claude Code, Copilot</p></div>
+        <div class="card group tilt rv"><h3>MLOps &amp; cloud</h3><p>AWS, Azure ML, Docker, Kubernetes (EKS), GitHub Actions, TF Serving, OpenVINO, Oracle OCI, Linux</p></div>
+        <div class="card group tilt rv"><h3>Data &amp; automation</h3><p>ETL, Snowflake, Databricks, Azure Data Factory, Power BI, Power Automate, UiPath</p></div>
+        <div class="card group tilt rv"><h3>Software engineering</h3><p>React, Flask, FastAPI, pytest, test-driven development, Git, OOP, design patterns</p></div>
+        <div class="card group tilt rv"><h3>Ways of working</h3><p>Agile and Scrum, UX research, heuristic evaluation, Figma, GDPR-aware data handling</p></div>
       </div>
     </div>
   </div>
@@ -583,93 +646,56 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 
 <section id="credentials" data-shape="cube">
   <div class="wrap">
-    <div class="head">
+    <div class="head rv">
       <span class="eyebrow">Credentials</span>
       <h2>Certified, <em>and still adding</em></h2>
-      <p>30+ certificates in total, anchored by Associate-level Machine Learning &amp; MLOps certifications from AWS and Microsoft.</p>
+      <p>30+ certificates in total. The two cloud ML associate certifications come first.</p>
     </div>
     <div class="creds">
-      <article class="card cred tilt new">
-        <span class="k">AWS</span>
-        <h3>AWS Certified — Machine Learning Engineer, Associate</h3>
-        <p>End-to-end ML development, feature engineering, model training, deployment endpoints, and MLOps monitoring on AWS.</p>
-      </article>
-      <article class="card cred tilt new">
-        <span class="k">Microsoft Certified</span>
-        <h3>Machine Learning Operations (MLOps) Engineer, Associate</h3>
-        <p>Azure MLOps &amp; Generative AI: reproducible pipelines, automated model deployment, CI/CD, and production endpoint governance.</p>
-      </article>
-      <article class="card cred tilt">
-        <span class="k">Microsoft &amp; LinkedIn</span>
-        <h3>Microsoft Azure AI Essentials</h3>
-        <p>Core Azure AI workloads, cognitive services, and responsible AI practices.</p>
-      </article>
-      <article class="card cred tilt">
-        <span class="k">Oracle</span>
-        <h3>OCI AI Foundations &amp; AI For You</h3>
-        <p>AI, deep learning, and ML infrastructure services on Oracle Cloud.</p>
-      </article>
-      <article class="card cred tilt">
-        <span class="k">Securiti</span>
-        <h3>AI Security and Governance</h3>
-        <p>Securing AI systems, regulatory alignment, and privacy-preserving data pipelines.</p>
-      </article>
-      <article class="card cred tilt">
-        <span class="k">Guvi · DevOps</span>
-        <h3>DevOps Engineering (CI/CD)</h3>
-        <p>Continuous integration, automated container delivery, and build pipelines.</p>
-      </article>
-      <article class="card cred tilt">
-        <span class="k">IIT Bombay</span>
-        <h3>Python, Git and Bash</h3>
-        <p>Spoken Tutorial certification in Linux shell scripting, Git workflows, and Python.</p>
-      </article>
-      <article class="card cred tilt">
-        <span class="k">Cisco</span>
-        <h3>Certified Networking Engineer</h3>
-        <p>Enterprise network architecture, routing protocols, and cloud connectivity.</p>
-      </article>
-      <article class="card cred tilt">
-        <span class="k">Coursera · 28 certificates</span>
-        <h3>ML, AI, Data Science &amp; Software Engineering</h3>
-        <p>Comprehensive coursework across deep learning, NLP, and software architecture, plus IELTS Academic 7.5 (C1).</p>
-      </article>
+      <article class="card cred feat tilt rv"><div class="k">Amazon Web Services<span>2026</span></div><h3>AWS Certified Machine Learning Engineer – Associate</h3><p>Building, deploying and monitoring ML pipelines on AWS.</p><div class="seal" aria-hidden="true">AWS</div></article>
+      <article class="card cred feat tilt rv"><div class="k">Microsoft Certified<span>2026</span></div><h3>Machine Learning Operations (MLOps) Engineer – Associate</h3><p>Reproducible training, endpoints, monitoring and CI/CD on Azure.</p><div class="seal" aria-hidden="true">MS</div></article>
+      <article class="card cred tilt rv"><div class="k">Securiti<span>Verified</span></div><h3>AI Security and Governance</h3><p>Securing AI systems and the data they run on.</p></article>
+      <article class="card cred tilt rv"><div class="k">Guvi<span>Verified</span></div><h3>DevOps Engineering</h3><p>CI/CD automation, containers and continuous delivery.</p></article>
+      <article class="card cred tilt rv"><div class="k">Microsoft &amp; LinkedIn<span>Verified</span></div><h3>Azure AI Essentials</h3><p>Core Azure AI services and responsible AI.</p></article>
+      <article class="card cred tilt rv"><div class="k">Oracle<span>Verified</span></div><h3>OCI AI Foundations &amp; AI For You</h3><p>AI and ML services on Oracle Cloud.</p></article>
+      <article class="card cred tilt rv"><div class="k">IIT Bombay<span>Verified</span></div><h3>Python, Git and Bash</h3><p>Spoken Tutorial programme.</p></article>
+      <article class="card cred tilt rv"><div class="k">Cisco<span>Verified</span></div><h3>Networking</h3><p>Network protocols and secure infrastructure.</p></article>
+      <article class="card cred tilt rv"><div class="k">Coursera<span>28 courses</span></div><h3>ML, AI, data science and software engineering</h3><p>Plus IELTS Academic 7.5 (C1).</p></article>
     </div>
 
-    <div class="sub-h">Education</div>
+    <div class="sub-h rv">Education</div>
     <div class="edu">
-      <article class="card tilt">
-        <span class="when">2026 – 2027 (Expected)</span>
+      <article class="card tilt rv">
+        <span class="when">2026 – Jan 2027 · conferral Mar 2027</span>
         <h3>MSc Human-Centred Artificial Intelligence</h3>
-        <div class="school">Technological University Dublin (Tallaght), Ireland</div>
-        <div class="row"><span class="pill">Deep Learning</span><span class="pill">Explainable AI</span><span class="pill">Ethics in AI</span><span class="pill">AI Risks</span><span class="pill">Society &amp; AI</span></div>
+        <div class="school">Technological University Dublin, Tallaght</div>
+        <div class="row"><span class="pill">Deep Learning</span><span class="pill">Ethics in AI</span><span class="pill">AI Risks</span><span class="pill">Society &amp; AI</span></div>
       </article>
-      <article class="card tilt">
+      <article class="card tilt rv">
         <span class="when">2020 – 2024</span>
         <h3>B.Tech Artificial Intelligence &amp; Data Science</h3>
         <div class="school">KGISL Institute of Technology, India</div>
-        <div class="row"><span class="pill">CGPA 8.09 / 10</span><span class="pill">First Class with Distinction</span></div>
+        <div class="row"><span class="pill">CGPA 8.09</span><span class="pill">Distinction</span></div>
       </article>
     </div>
   </div>
 </section>
 
-<section id="contact" data-shape="lorenz">
+<section id="contact" data-shape="sphere">
   <div class="wrap contact">
-    <div>
+    <div class="rv">
       <span class="eyebrow">Contact</span>
-      <h2 style="margin-top:14px">Let's build something <em>people can trust</em></h2>
-      <p>Available for Machine Learning Engineer, MLOps, AI Engineer, and Data Engineering roles across Galway, Dublin, and all of Ireland. I reply within a day.</p>
+      <h2>Let's build something <em>people can trust</em></h2>
+      <p>Machine learning, MLOps, AI and data engineering roles, internships and graduate programmes across Ireland. I reply within a day.</p>
       <div class="email">
         <a href="mailto:jeevab2011@gmail.com" id="emailLink">jeevab2011@gmail.com</a>
         <button class="copy" type="button" id="copyBtn">Copy</button>
       </div>
     </div>
-    <nav class="links" aria-label="Profiles">
+    <nav class="links rv" aria-label="Profiles">
       <a href="https://www.linkedin.com/in/jeeva-ganesh-kumar-b-8b3832217" target="_blank" rel="noopener"><span>LinkedIn</span><small>Profile ↗</small></a>
       <a href="https://github.com/Jeevjk" target="_blank" rel="noopener"><span>GitHub</span><small>@Jeevjk ↗</small></a>
-      <a href="https://jeevjk.github.io" target="_blank" rel="noopener"><span>Portfolio</span><small>jeevjk.github.io ↗</small></a>
-      <a href="tel:+353899668620"><span>+353 89 966 8620</span><small>Galway / Dublin, IE</small></a>
+      <a href="tel:+353899668620"><span>+353 89 966 8620</span><small>Phone</small></a>
     </nav>
   </div>
 </section>
@@ -678,8 +704,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 
 <footer>
   <div class="wrap">
-    <span>© 2026 Jeeva Ganesh Kumar · Galway &amp; Dublin, Ireland</span>
-    <span>Hand-built in HTML, CSS &amp; vanilla JS · Zero external 3D libraries</span>
+    <span>© 2026 Jeeva Ganesh Kumar · Dublin &amp; Galway, Ireland</span>
+    <span>Hand-built in HTML, CSS and vanilla JS. Every 3D effect runs without libraries.</span>
   </div>
 </footer>
 
@@ -688,264 +714,208 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const canHover = matchMedia('(hover: hover) and (pointer: fine)').matches;
   const small = matchMedia('(max-width: 820px)').matches;
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
 
-  // ---------- Navigation ----------
-  const nav=document.getElementById('nav'), menuBtn=document.getElementById('menuBtn'), links=document.getElementById('navLinks');
+  // ---------- nav ----------
+  const nav=$('#nav'), menuBtn=$('#menuBtn'), links=$('#navLinks'), bar=$('#progress');
   menuBtn.addEventListener('click',()=>{const o=links.classList.toggle('open');menuBtn.setAttribute('aria-expanded',o);menuBtn.textContent=o?'Close':'Menu'});
   links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');menuBtn.setAttribute('aria-expanded','false');menuBtn.textContent='Menu'}));
 
-  // ---------- Upgraded 3D Mathematical Point Cloud & Synaptic Mesh ----------
-  const cvs=document.getElementById('scene'), ctx=cvs.getContext('2d');
-  const N = small ? 950 : 1800;
-  document.getElementById('ptCount').textContent = N.toLocaleString('en-IE');
-  let W=0,H=0,DPR=1;
-  function resize(){
-    DPR=Math.min(window.devicePixelRatio||1, small?1.5:1.85);
-    W=innerWidth; H=innerHeight;
-    cvs.width=Math.round(W*DPR); cvs.height=Math.round(H*DPR);
-    ctx.setTransform(DPR,0,0,DPR,0,0);
-  }
-  resize(); addEventListener('resize',resize);
+  // ---------- hero letters drop in ----------
+  let li=0;
+  $$('.split').forEach(el=>{const t=el.textContent;el.textContent='';[...t].forEach(c=>{const s=document.createElement('span');s.className='ch';s.textContent=c===' '?' ':c;s.style.animationDelay=(0.15+li++*0.045)+'s';el.appendChild(s)})});
 
+  // ---------- role typewriter ----------
+  const roles=['Machine Learning Engineer','MLOps Engineer','AI Evaluation Specialist','Data Engineer','Human-Centred AI Researcher'], roleEl=$('#role');
+  if(!reduce){let ri=0,ci=roles[0].length,del=true;
+    (function type(){const w=roles[ri];
+      if(del){ci--;if(ci<=0){del=false;ri=(ri+1)%roles.length}}
+      else{ci++;if(ci>=roles[ri].length){del=true;roleEl.textContent=roles[ri];return setTimeout(type,2200)}}
+      roleEl.textContent=roles[ri].slice(0,Math.max(0,ci));setTimeout(type,del?32:62)})();
+  }
+
+  // ---------- marquee ----------
+  const words=['Explainable AI','MLOps','Deep learning','RAG','Agent evaluation','Computer vision','Kubernetes','Fairness','AWS','Azure','Responsible AI','Data pipelines'];
+  [['#mq1',words],['#mq2',[...words].reverse()]].forEach(([id,w])=>{const el=$(id);const html=w.map(x=>'<span>'+x+'</span>').join('');el.innerHTML=html+html});
+
+  // ---------- 3D point cloud ----------
+  const cvs=$('#scene'), ctx=cvs.getContext('2d');
+  const N = small ? 900 : 1800, STARS = small ? 90 : 180;
+  $('#ptCount').textContent = N.toLocaleString('en-IE');
+  let W=0,H=0,DPR=1;
+  function resize(){DPR=Math.min(window.devicePixelRatio||1, small?1.5:1.75);W=innerWidth;H=innerHeight;cvs.width=Math.round(W*DPR);cvs.height=Math.round(H*DPR);ctx.setTransform(DPR,0,0,DPR,0,0)}
+  resize(); addEventListener('resize',resize);
   const R=()=>Math.random()-.5;
   function make(kind){
-    const a=new Float32Array(N*3);
-    const s=(i,x,y,z)=>{a[i*3]=x;a[i*3+1]=y;a[i*3+2]=z};
-    if(kind==='sphere'){
-      // Dual-shell Fibonacci sphere with inner core
-      for(let i=0;i<N;i++){
-        const core = i < N*0.18 ? 0.42 : 1.0;
-        const y=1-2*(i+.5)/N, r=Math.sqrt(1-y*y)*core, t=i*2.3999632;
-        s(i,Math.cos(t)*r,y*core,Math.sin(t)*r);
-      }
-    }
-    else if(kind==='knot'){
-      // (3,2) trefoil torus knot ribbon
-      for(let i=0;i<N;i++){
-        const t=i/N*Math.PI*2, r=.64+.3*Math.cos(3*t), j=.09;
-        s(i,r*Math.cos(2*t)+R()*j,r*Math.sin(2*t)+R()*j,-.44*Math.sin(3*t)+R()*j);
-      }
-    }
-    else if(kind==='torus'){
-      // Twisted Clifford Torus
-      for(let i=0;i<N;i++){
-        const u=i/N*Math.PI*2, v=i*2.3999632*3, Rr=.8, r=.32;
-        s(i,(Rr+r*Math.cos(v))*Math.cos(u),r*Math.sin(v),(Rr+r*Math.cos(v))*Math.sin(u));
-      }
-    }
-    else if(kind==='helix'){
-      // Double Helix with base-pair rungs
-      const S=Math.floor(N*.72), turn=4.5;
-      for(let i=0;i<N;i++){
-        if(i<S){
-          const k=i>>1, y=-1.18+2.36*k/(S/2), ang=y*turn+(i&1?Math.PI:0);
-          s(i,.5*Math.cos(ang)+R()*.025,y,.5*Math.sin(ang)+R()*.025);
-        }else{
-          const k=i%28, y=-1.12+2.24*k/27, ang=y*turn, u=1-2*Math.random();
-          s(i,.5*Math.cos(ang)*u,y,.5*Math.sin(ang)*u);
-        }
-      }
-    }
-    else if(kind==='cube'){
-      // 4D Tesseract (Hypercube projection)
-      const c=[];
-      for(let x=-1;x<=1;x+=2)for(let y=-1;y<=1;y+=2)for(let z=-1;z<=1;z+=2)c.push([x,y,z]);
-      const E=[];
-      for(let p=0;p<8;p++)for(let q=p+1;q<8;q++){
-        let d=0;for(let k=0;k<3;k++)if(c[p][k]!==c[q][k])d++;
-        if(d===1)E.push([p,q]);
-      }
-      for(let i=0;i<N;i++){
-        const m=i%3, e=E[i%12], t=Math.random(), sz=m===0?.84:m===1?.44:0;
-        if(m<2){
-          const A=c[e[0]], B=c[e[1]];
-          s(i,(A[0]+(B[0]-A[0])*t)*sz,(A[1]+(B[1]-A[1])*t)*sz,(A[2]+(B[2]-A[2])*t)*sz);
-        }else{
-          const C=c[i%8];
-          s(i,C[0]*(.44+.4*t),C[1]*(.44+.4*t),C[2]*(.44+.4*t));
-        }
-      }
-    }
-    else if(kind==='net'){
-      // 5-Layer Deep Neural Network Architecture
-      const L=5, per=10, rad=[.44,.82,.94,.82,.4], nodes=[];
-      for(let l=0;l<L;l++){
-        nodes.push([]);
-        for(let k=0;k<per;k++){
-          const ang=k/per*Math.PI*2+l*.35;
-          nodes[l].push([-1.18+2.36*l/(L-1),Math.cos(ang)*rad[l],Math.sin(ang)*rad[l]]);
-        }
-      }
-      const edges=[];
-      for(let l=0;l<L-1;l++)for(let k=0;k<per;k++)for(let m=0;m<3;m++){
-        edges.push([nodes[l][k],nodes[l+1][(k*2+m*3+l)%per]]);
-      }
-      const NODE=Math.floor(N*.38);
-      for(let i=0;i<N;i++){
-        if(i<NODE){
-          const nd=nodes[i%L][Math.floor(i/L)%per];
-          s(i,nd[0]+R()*.06,nd[1]+R()*.06,nd[2]+R()*.06);
-        }else{
-          const e=edges[i%edges.length], t=Math.random();
-          s(i,e[0][0]+(e[1][0]-e[0][0])*t,e[0][1]+(e[1][1]-e[0][1])*t,e[0][2]+(e[1][2]-e[0][2])*t);
-        }
-      }
-    }
-    else if(kind==='lorenz'){
-      // 3D Lorenz Strange Attractor (Dynamical System)
-      let x=0.1, y=0, z=0;
-      const dt=0.0055, sigma=10, rho=28, beta=8/3;
-      for(let i=0;i<200;i++){
-        const dx=sigma*(y-x)*dt, dy=(x*(rho-z)-y)*dt, dz=(x*y-beta*z)*dt;
-        x+=dx; y+=dy; z+=dz;
-      }
-      for(let i=0;i<N;i++){
-        const dx=sigma*(y-x)*dt, dy=(x*(rho-z)-y)*dt, dz=(x*y-beta*z)*dt;
-        x+=dx; y+=dy; z+=dz;
-        s(i, x*0.042 + R()*0.02, (z-25)*0.042 + R()*0.02, y*0.042 + R()*0.02);
-      }
-    }
+    const a=new Float32Array(N*3); const s=(i,x,y,z)=>{a[i*3]=x;a[i*3+1]=y;a[i*3+2]=z};
+    if(kind==='sphere'){for(let i=0;i<N;i++){const y=1-2*(i+.5)/N,r=Math.sqrt(1-y*y),t=i*2.399963;s(i,Math.cos(t)*r,y,Math.sin(t)*r)}}
+    else if(kind==='knot'){for(let i=0;i<N;i++){const t=i/N*Math.PI*2,r=.62+.3*Math.cos(3*t),j=.11;s(i,r*Math.cos(2*t)+R()*j,r*Math.sin(2*t)+R()*j,-.42*Math.sin(3*t)+R()*j)}}
+    else if(kind==='torus'){for(let i=0;i<N;i++){const u=i/N*Math.PI*2,v=i*2.399963*3,Rr=.78,r=.3;s(i,(Rr+r*Math.cos(v))*Math.cos(u),r*Math.sin(v),(Rr+r*Math.cos(v))*Math.sin(u))}}
+    else if(kind==='galaxy'){for(let i=0;i<N;i++){const arm=i%4,f=Math.pow(Math.random(),.7),r=.08+f*1.15,ang=r*3.4+arm*Math.PI/2+R()*.35*(1.2-f);s(i,Math.cos(ang)*r,R()*.16*(1.25-f),Math.sin(ang)*r)}}
+    else if(kind==='helix'){const S=Math.floor(N*.7),turn=4.4;for(let i=0;i<N;i++){if(i<S){const k=i>>1,y=-1.15+2.3*k/(S/2),ang=y*turn+(i&1?Math.PI:0);s(i,.48*Math.cos(ang)+R()*.03,y,.48*Math.sin(ang)+R()*.03)}else{const k=i%26,y=-1.1+2.2*k/25,ang=y*turn,u=1-2*Math.random();s(i,.48*Math.cos(ang)*u,y,.48*Math.sin(ang)*u)}}}
+    else if(kind==='cube'){const c=[];for(let x=-1;x<=1;x+=2)for(let y=-1;y<=1;y+=2)for(let z=-1;z<=1;z+=2)c.push([x,y,z]);const E=[];for(let p=0;p<8;p++)for(let q=p+1;q<8;q++){let d=0;for(let k=0;k<3;k++)if(c[p][k]!==c[q][k])d++;if(d===1)E.push([p,q])}
+      for(let i=0;i<N;i++){const m=i%3,e=E[i%12],t=Math.random(),sz=m===0?.82:m===1?.46:0;if(m<2){const A=c[e[0]],B=c[e[1]];s(i,(A[0]+(B[0]-A[0])*t)*sz,(A[1]+(B[1]-A[1])*t)*sz,(A[2]+(B[2]-A[2])*t)*sz)}else{const C=c[i%8];s(i,C[0]*(.46+.36*t),C[1]*(.46+.36*t),C[2]*(.46+.36*t))}}}
+    else if(kind==='net'){const L=5,per=9,rad=[.42,.8,.9,.8,.38],nodes=[];for(let l=0;l<L;l++){nodes.push([]);for(let k=0;k<per;k++){const ang=k/per*Math.PI*2+l*.35;nodes[l].push([-1.15+2.3*l/(L-1),Math.cos(ang)*rad[l],Math.sin(ang)*rad[l]])}}
+      const edges=[];for(let l=0;l<L-1;l++)for(let k=0;k<per;k++)for(let m=0;m<3;m++)edges.push([nodes[l][k],nodes[l+1][(k*2+m*3+l)%per]]);
+      const NODE=Math.floor(N*.38);for(let i=0;i<N;i++){if(i<NODE){const nd=nodes[i%L][Math.floor(i/L)%per];s(i,nd[0]+R()*.07,nd[1]+R()*.07,nd[2]+R()*.07)}else{const e=edges[i%edges.length],t=Math.random();s(i,e[0][0]+(e[1][0]-e[0][0])*t,e[0][1]+(e[1][1]-e[0][1])*t,e[0][2]+(e[1][2]-e[0][2])*t)}}}
     return a;
   }
-
-  const shapeKeys = ['sphere','knot','net','torus','helix','cube','lorenz'];
-  const shapes={}; shapeKeys.forEach(k=>shapes[k]=make(k));
-  const P=new Float32Array(N*3);
-  for(let i=0;i<N*3;i++)P[i]=R()*4.5;
+  const shapes={}; ['sphere','knot','net','torus','helix','cube','galaxy'].forEach(k=>shapes[k]=make(k));
+  // where the object sits for each section: x, y (fraction of viewport), size, brightness
+  const layouts={hero:{x:.74,y:.5,s:.34,a:1},knot:{x:.86,y:.52,s:.2,a:.4},net:{x:.47,y:.52,s:.2,a:.95},helix:{x:.5,y:.5,s:.3,a:.26},torus:{x:.9,y:.24,s:.17,a:.42},galaxy:{x:.3,y:.72,s:.36,a:.32},cube:{x:.88,y:.62,s:.19,a:.4},sphere:{x:.74,y:.52,s:.28,a:.6}};
+  const P=new Float32Array(N*3); for(let i=0;i<N*3;i++)P[i]=R()*6;
   if(reduce)P.set(shapes.sphere);
+  let T=shapes.sphere, current='sphere', lay={...layouts.hero}, layT=layouts.hero;
+  const ease=new Float32Array(N); for(let i=0;i<N;i++)ease[i]=.022+.05*((i*7919)%97)/97;
+  const SX=new Float32Array(STARS),SY=new Float32Array(STARS),SZ=new Float32Array(STARS);for(let i=0;i<STARS;i++){SX[i]=Math.random();SY[i]=Math.random();SZ[i]=.2+Math.random()*.8}
 
-  let T=shapes.sphere, current='sphere', manualOverride=false;
-  const ease=new Float32Array(N);
-  for(let i=0;i<N;i++)ease[i]=.028+.052*((i*7919)%97)/97;
+  const NB=6, bucket=new Uint16Array(NB*N), bc=new Uint32Array(NB), PX=new Float32Array(N), PY=new Float32Array(N);
+  const cols=['rgba(143,179,207,.22)','rgba(143,179,207,.38)','rgba(190,184,150,.5)','rgba(214,178,94,.68)','rgba(226,196,120,.85)','rgba(245,226,170,1)'];
+  let rx=.25, ry=0, mx=0, my=0, vy=0, pmx=-9999, pmy=-9999, burst=0;
+  const spot=$('#spot');
+  if(canHover){addEventListener('pointermove',e=>{mx=e.clientX/W*2-1;my=e.clientY/H*2-1;pmx=e.clientX;pmy=e.clientY;spot.classList.add('on');spot.style.transform='translate('+e.clientX+'px,'+e.clientY+'px)'},{passive:true});
+    document.addEventListener('pointerleave',()=>{pmx=pmy=-9999;spot.classList.remove('on')})}
 
-  const NB=6, bucket=new Uint16Array(NB*N), bc=new Uint32Array(NB), PX=new Float32Array(N), PY=new Float32Array(N), PZ=new Float32Array(N);
-  const cols=[
-    'rgba(143,179,207,.24)',
-    'rgba(143,179,207,.42)',
-    'rgba(190,184,150,.56)',
-    'rgba(214,178,94,.74)',
-    'rgba(226,196,120,.90)',
-    'rgba(245,226,170,1)'
-  ];
-
-  let rx=.24, ry=0, mx=0, my=0, vy=0, pointerPxX=-9999, pointerPxY=-9999;
-  if(canHover){
-    addEventListener('pointermove',e=>{
-      mx=e.clientX/W*2-1;
-      my=e.clientY/H*2-1;
-      pointerPxX=e.clientX;
-      pointerPxY=e.clientY;
-    },{passive:true});
-  }
-
-  const hero=document.getElementById('top');
-  const shapeName=document.getElementById('shapeName');
-  const shapeBtns=[...document.querySelectorAll('.shape-btn')];
-  const label={
-    sphere:'Fibonacci sphere',
-    knot:'torus knot',
-    net:'deep neural network',
-    torus:'Clifford torus',
-    helix:'DNA double helix',
-    cube:'4D hypercube lattice',
-    lorenz:'Lorenz strange attractor'
-  };
-
-  function setShape(sh, isManual=false){
-    if(!shapes[sh])return;
-    current=sh;
-    T=shapes[sh];
-    if(isManual) manualOverride=true;
-    shapeName.textContent=label[sh]||sh;
-    shapeBtns.forEach(b=>b.classList.toggle('active',b.dataset.target===sh));
-    if(reduce)draw();
-  }
-
-  shapeBtns.forEach(btn=>{
-    btn.addEventListener('click',()=>setShape(btn.dataset.target, true));
-  });
-
-  let running=true, raf=0, time=0;
+  let running=true, raf=0, lastY=scrollY, scrollVel=0;
   function draw(){
-    time += 0.015;
-    const heroH=hero.offsetHeight||H, p=Math.min(1,Math.max(0,scrollY/(heroH*.9)));
-    let cx,cy,S,alpha;
-    // Keep 3D manifold visible and well-proportioned across all sections
-    if(small){
-      cx=W*.5; cy=H*(.42-.04*p);
-      S=Math.min(W,H)*(.36-.04*p);
-      alpha=.46-.14*p;
-    }else{
-      cx=W*(.74+.06*p); cy=H*(.5+.02*p);
-      S=Math.min(W,H)*(.34-.05*p);
-      alpha=1-.45*p;
-    }
-
-    for(let i=0;i<N;i++){
-      const e=reduce?1:ease[i], j=i*3;
-      P[j]+=(T[j]-P[j])*e;
-      P[j+1]+=(T[j+1]-P[j+1])*e;
-      P[j+2]+=(T[j+2]-P[j+2])*e;
-    }
-
-    if(!reduce){
-      vy+=((mx*.014)-vy)*.05;
-      ry+=.0028+vy;
-      rx+=((.24+my*.38)-rx)*.045;
-    }
+    const big=small?.6:1;
+    for(const k of ['x','y','s','a'])lay[k]+=(layT[k]-lay[k])*(reduce?1:.05);
+    const cx=small?W*.5:W*lay.x, cy=small?H*(lay.y-.06):H*lay.y, S=Math.min(W,H)*lay.s*(small?1.15:1), alpha=small?Math.min(lay.a,.42):lay.a;
+    // ease points toward the current shape
+    for(let i=0;i<N;i++){const e=reduce?1:ease[i],j=i*3;P[j]+=(T[j]-P[j])*e;P[j+1]+=(T[j+1]-P[j+1])*e;P[j+2]+=(T[j+2]-P[j+2])*e}
+    if(!reduce){scrollVel+=((scrollY-lastY)-scrollVel)*.1;lastY=scrollY;vy+=((mx*.012)-vy)*.05;ry+=.0024+vy+Math.max(-.03,Math.min(.03,scrollVel*.0006));rx+=((.25+my*.35)-rx)*.04}
     const cY=Math.cos(ry),sY=Math.sin(ry),cX=Math.cos(rx),sX=Math.sin(rx);
     ctx.clearRect(0,0,W,H);
+    // far starfield with parallax
+    ctx.fillStyle='rgba(236,235,230,.5)';
+    for(let i=0;i<STARS;i++){let y=(SY[i]*H - scrollY*SZ[i]*.15)%H;if(y<0)y+=H;const x=SX[i]*W+mx*12*SZ[i];const z=SZ[i];ctx.globalAlpha=.15+.45*z;ctx.fillRect(x,y,z*1.4,z*1.4)}
+    ctx.globalAlpha=1;
+    if(alpha<=.01)return;
     bc.fill(0);
-
-    // Subtle radial ambient halo behind the 3D manifold
-    const grad = ctx.createRadialGradient(cx, cy, S*0.05, cx, cy, S*1.35);
-    grad.addColorStop(0, `rgba(214, 178, 94, ${0.07 * alpha})`);
-    grad.addColorStop(0.5, `rgba(143, 179, 207, ${0.035 * alpha})`);
-    grad.addColorStop(1, 'rgba(11, 13, 18, 0)');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, W, H);
-
-    for(let i=0;i<N;i++){
-      const j=i*3;
-      const pulse = reduce ? 0 : Math.sin(time + i*0.03)*0.012;
-      const x=P[j]*(1+pulse), y=P[j+1]*(1+pulse), z=P[j+2]*(1+pulse);
+    const rr=90*90;
+    for(let i=0;i<N;i++){const j=i*3,x=P[j],y=P[j+1],z=P[j+2];
       const x1=x*cY-z*sY, z1=x*sY+z*cY, y2=y*cX-z1*sX, z2=y*sX+z1*cX;
-      const f=3/(3.55-z2);
-      let sx=cx+x1*S*f, sy=cy-y2*S*f;
-
-      // Subtle interactive cursor repulsion wave
-      if(canHover && !reduce){
-        const dx=sx-pointerPxX, dy=sy-pointerPxY, d2=dx*dx+dy*dy;
-        if(d2<14400 && d2>1){
-          const d=Math.sqrt(d2), push=(1-d/120)*14;
-          sx+=(dx/d)*push; sy+=(dy/d)*push;
-        }
-      }
-
-      PX[i]=sx; PY[i]=sy; PZ[i]=z2;
-      let b=((z2+1.2)/2.4*NB)|0;
-      if(b<0)b=0; else if(b>=NB)b=NB-1;
-      bucket[b*N+bc[b]++]=i;
-    }
-
-    // Draw subtle synaptic mesh lines between foreground sequential nodes
-    ctx.globalAlpha = alpha * 0.22;
-    ctx.strokeStyle = 'rgba(214, 178, 94, 0.35)';
-    ctx.lineWidth = 0.65;
-    ctx.beginPath();
-    const step = small ? 9 : 6;
-    const maxDist2 = (S * 0.26) * (S * 0.26);
-    for(let i=0; i<N-step; i+=step){
-      if(PZ[i] > -0.15){
-        const dx = PX[i] - PX[i+1], dy = PY[i] - PY[i+1];
-        if(dx*dx + dy*dy < maxDist2){
-          ctx.moveTo(PX[i], PY[i]);
-          ctx.lineTo(PX[i+1], PY[i+1]);
-        }
-      }
-    }
-    ctx.stroke();
-
-    // Draw depth-sorted 3D nodes
+      const f=3/(3.6-z2);let px=cx+x1*S*f,py=cy-y2*S*f;
+      // cursor pushes nearby points outward
+      const dx=px-pmx,dy=py-pmy,d2=dx*dx+dy*dy;if(d2<rr&&!reduce){const k=(1-d2/rr)*18/Math.sqrt(d2+1);px+=dx*k;py+=dy*k}
+      PX[i]=px;PY[i]=py;
+      let b=((z2+1.2)/2.4*NB)|0; if(b<0)b=0; else if(b>=NB)b=NB-1; bucket[b*N+bc[b]++]=i}
     ctx.globalAlpha=alpha;
-    for(let b=0;b<NB
+    for(let b=0;b<NB;b++){ctx.fillStyle=cols[b];const sz=(.9+b*.42)*(small?.9:1),h=sz/2,base=b*N;for(let n=0;n<bc[b];n++){const i=bucket[base+n];ctx.fillRect(PX[i]-h,PY[i]-h,sz,sz)}}
+    ctx.globalAlpha=1;
+  }
+  function loop(){if(!running)return;draw();raf=requestAnimationFrame(loop)}
+  if(reduce)draw();else loop();
+  document.addEventListener('visibilitychange',()=>{if(reduce)return;running=!document.hidden;if(running){cancelAnimationFrame(raf);loop()}});
+
+  // ---------- scroll: section shape, nav, progress, timeline ----------
+  const secs=$$('section[data-shape]'), navA=[...links.querySelectorAll('a')], shapeName=$('#shapeName');
+  const label={sphere:'sphere',knot:'torus knot',net:'neural network',torus:'torus',helix:'double helix',cube:'lattice',galaxy:'galaxy'};
+  const tl=$('#tl'), tlFill=$('#tlFill'), tlRows=$$('.tl-row');
+  let ticking=false;
+  function onScroll(){ticking=false;nav.classList.toggle('scrolled',scrollY>20);
+    const max=document.documentElement.scrollHeight-innerHeight;bar.style.transform='scaleX('+(max>0?scrollY/max:0).toFixed(4)+')';
+    const mid=innerHeight*.45;let active=secs[0];for(const s of secs){const r=s.getBoundingClientRect();if(r.top<=mid&&r.bottom>mid){active=s;break}}
+    const sh=active.dataset.shape;
+    layT=active.id==='top'?layouts.hero:layouts[sh];
+    if(sh!==current){current=sh;T=shapes[sh];shapeName.textContent=label[sh]}
+    navA.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+active.id));
+    const tr=tl.getBoundingClientRect(),p=Math.min(1,Math.max(0,(innerHeight*.6-tr.top)/tr.height));tlFill.style.transform='scaleY('+p.toFixed(4)+')';
+    tlRows.forEach(r=>{const b=r.getBoundingClientRect();r.classList.toggle('lit',b.top<innerHeight*.6)});
+    if(reduce)draw();
+  }
+  addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(onScroll)}},{passive:true});
+  onScroll();
+
+  // ---------- 3D reveal for content below the first screen ----------
+  const revealIO = 'IntersectionObserver' in window && !reduce ? new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const t=e.target;t.classList.remove('pre');revealIO.unobserve(t);setTimeout(()=>t.style.transitionDelay='',1200)}}),{rootMargin:'0px 0px -8% 0px'}) : null;
+  if(revealIO){$$('.rv').forEach(el=>{if(el.getBoundingClientRect().top>innerHeight){el.classList.add('pre');revealIO.observe(el)}});
+    // stagger siblings in grids
+    $$('.grid,.creds,.groups,.do-list,.edu').forEach(g=>[...g.children].forEach((c,i)=>c.style.transitionDelay=(i%3)*90+'ms'));}
+
+  // ---------- count-up ----------
+  const nums=$$('[data-count]');
+  function countUp(el){const to=parseFloat(el.dataset.count),dec=+(el.dataset.dec||0),suf=el.dataset.suf||'',t0=performance.now(),dur=1400;
+    (function step(t){const k=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-k,3);el.textContent=(to*e).toFixed(dec)+suf;if(k<1)requestAnimationFrame(step)})(t0)}
+  if(!reduce&&'IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){countUp(e.target);io.unobserve(e.target)}}),{threshold:.6});nums.forEach(n=>io.observe(n))}
+
+  // ---------- tilt cards + magnetic buttons ----------
+  if(canHover&&!reduce){
+    $$('.tilt').forEach(el=>{
+      el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+        el.classList.add('hot');el.style.setProperty('--ry',((x-.5)*10).toFixed(2)+'deg');el.style.setProperty('--rx',((.5-y)*10).toFixed(2)+'deg');
+        el.style.setProperty('--gx',(x*100).toFixed(1)+'%');el.style.setProperty('--gy',(y*100).toFixed(1)+'%')});
+      el.addEventListener('pointerleave',()=>{el.classList.remove('hot');el.style.setProperty('--rx','0deg');el.style.setProperty('--ry','0deg')});
+    });
+    $$('.mag').forEach(b=>{b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.25).toFixed(1)+'px,'+((e.clientY-r.top-r.height/2)*.35).toFixed(1)+'px)'});
+      b.addEventListener('pointerleave',()=>{b.style.transition='transform .5s cubic-bezier(.2,.8,.2,1),background .25s';b.style.transform='';setTimeout(()=>b.style.transition='',500)})});
+  }
+
+  // ---------- project numbers, pipeline flows, filters ----------
+  const cards=$$('#grid .proj');
+  cards.forEach((c,i)=>{c.querySelector('.num').textContent=String(i+1).padStart(2,'0');
+    const steps=(c.dataset.flow||'').split('|').filter(Boolean);if(!steps.length)return;
+    const f=document.createElement('div');f.className='flow';f.setAttribute('aria-label','Pipeline: '+steps.join(', then '));f.setAttribute('role','img');
+    steps.forEach((s,k)=>{if(k){const cn=document.createElement('span');cn.className='fc';cn.style.setProperty('--dl',(k*.35)+'s');f.appendChild(cn)}const n=document.createElement('span');n.className='fn';n.textContent=s;f.appendChild(n)});
+    c.querySelector('.p-top').after(f)});
+  const fbtns=$$('.filters button');
+  fbtns.forEach(b=>{const f=b.dataset.f;b.querySelector('.count').textContent=f==='all'?cards.length:cards.filter(c=>c.dataset.cat.split(' ').includes(f)).length;
+    b.addEventListener('click',()=>{fbtns.forEach(x=>x.setAttribute('aria-pressed',x===b));let n=0;
+      cards.forEach(c=>{const on=f==='all'||c.dataset.cat.split(' ').includes(f);c.hidden=!on;c.classList.remove('show','pre');if(on&&!reduce){void c.offsetWidth;c.style.animationDelay=(n++*60)+'ms';c.classList.add('show')}})})});
+
+  // ---------- 3D tag sphere ----------
+  const orb=$('#orb');
+  const tags=['Python','SQL','JavaScript','Java','Bash','PyTorch','pandas','NumPy','scikit-learn','XGBoost','TensorFlow','Keras','CNNs','NLP','SHAP','LIME','EBM','RAG','LangChain','Ollama','Hugging Face','Prompt chaining','Claude Code','Copilot','Docker','Kubernetes','EKS','GitHub Actions','TF Serving','OpenVINO','AWS','Azure ML','Linux','Power Automate','UiPath','React','FastAPI','Flask','pytest','Power BI','Figma','Snowflake','Databricks','Git'];
+  const tp=tags.map((t,i)=>{const sp=document.createElement('span');sp.textContent=t;orb.appendChild(sp);const y=1-2*(i+.5)/tags.length,r=Math.sqrt(1-y*y),a=i*2.399963;return{el:sp,x:Math.cos(a)*r,y,z:Math.sin(a)*r}});
+  let ox=0,oy=0,orbOn=false,orbRaf=0,dragging=false,lx=0,ly=0;
+  function orbDraw(){const Rr=orb.clientWidth*.42,cx=Math.cos(ox),sx=Math.sin(ox),cy=Math.cos(oy),sy=Math.sin(oy);
+    for(const t of tp){let x=t.x*cy-t.z*sy,z=t.x*sy+t.z*cy,y=t.y*cx-z*sx;z=t.y*sx+z*cx;t.x=x;t.y=y;t.z=z;
+      const sc=.62+.5*(z+1)/2;t.el.style.transform='translate(-50%,-50%) translate3d('+(x*Rr).toFixed(1)+'px,'+(y*Rr).toFixed(1)+'px,0) scale('+sc.toFixed(3)+')';
+      t.el.style.opacity=(.18+.82*(z+1)/2).toFixed(2);t.el.style.zIndex=Math.round((z+1)*50)}}
+  function orbLoop(){if(!orbOn)return;if(!dragging){ox+=(0.0025-ox)*.02;oy+=(0.005-oy)*.02}else{ox*=.8;oy*=.8}orbDraw();orbRaf=requestAnimationFrame(orbLoop)}
+  orbDraw();
+  if(!reduce){
+    new IntersectionObserver(es=>{orbOn=es[0].isIntersecting;cancelAnimationFrame(orbRaf);if(orbOn)orbLoop()}).observe(orb);
+    orb.addEventListener('pointerdown',e=>{dragging=true;lx=e.clientX;ly=e.clientY;orb.setPointerCapture(e.pointerId);orb.style.cursor='grabbing'});
+    orb.addEventListener('pointermove',e=>{if(!dragging)return;oy=Math.max(-.08,Math.min(.08,(e.clientX-lx)*-.004));ox=Math.max(-.08,Math.min(.08,(e.clientY-ly)*.004));lx=e.clientX;ly=e.clientY});
+    const up=()=>{dragging=false;orb.style.cursor=''};orb.addEventListener('pointerup',up);orb.addEventListener('pointercancel',up);
+  }
+  addEventListener('resize',()=>{const a=ox,b=oy;ox=oy=0;orbDraw();ox=a;oy=b});
+
+  // ---------- floating 3D orbs (glossy spheres with labels) ----------
+  const oc=$('#orbs'), octx=oc.getContext('2d');
+  const orbLabels=['Python','PyTorch','AWS','Azure ML','Docker','Kubernetes','SHAP','RAG','XGBoost','TensorFlow','SQL','LangChain','','','','','',''];
+  const tints=[[214,178,94],[143,179,207],[236,235,230],[239,211,143],[120,140,165]];
+  let OW=0,OH=0,orbs=[];
+  function oresize(){const d=Math.min(devicePixelRatio||1,1.75);OW=oc.clientWidth;OH=oc.clientHeight;oc.width=OW*d;oc.height=OH*d;octx.setTransform(d,0,0,d,0,0);
+    const n=small?11:orbLabels.length;orbs=[];for(let i=0;i<n;i++){const lab=orbLabels[i]||'';const r=lab?(small?24:30)+Math.random()*(small?8:12):8+Math.random()*16;
+      orbs.push({lab,r,bx:(i+.5)/n*OW+R()*OW/n*.6,by:OH*(.3+Math.random()*.4),z:Math.random(),ph:Math.random()*6.28,sp:.5+Math.random()*.8,t:tints[i%tints.length],ox:0,oy:0})}}
+  oresize();addEventListener('resize',oresize);
+  let omx=-999,omy=-999,orbsOn=false,orbsRaf=0;
+  oc.parentElement.addEventListener('pointermove',e=>{const r=oc.getBoundingClientRect();omx=e.clientX-r.left;omy=e.clientY-r.top});
+  oc.parentElement.addEventListener('pointerleave',()=>{omx=omy=-999});
+  function odraw(t){octx.clearRect(0,0,OW,OH);
+    const sorted=orbs.slice().sort((a,b)=>a.z-b.z);
+    for(const o of sorted){const bob=reduce?0:Math.sin(t*.001*o.sp+o.ph)*14;let x=o.bx+(reduce?0:Math.cos(t*.0007*o.sp+o.ph)*10),y=o.by+bob;
+      const dx=x-omx,dy=y-omy,d=Math.hypot(dx,dy),push=d<140?(140-d)/140*40:0;o.ox+=((d?dx/d*push:0)-o.ox)*.12;o.oy+=((d?dy/d*push:0)-o.oy)*.12;x+=o.ox;y+=o.oy;
+      const sc=.7+o.z*.5,r=o.r*sc,[cr,cg,cb]=o.t;
+      // shadow
+      octx.fillStyle='rgba(0,0,0,.35)';octx.beginPath();octx.ellipse(x,OH-14,r*.9,r*.22,0,0,6.283);octx.fill();
+      const g=octx.createRadialGradient(x-r*.35,y-r*.4,r*.08,x,y,r);
+      g.addColorStop(0,'rgba(255,255,255,.95)');g.addColorStop(.25,'rgba('+cr+','+cg+','+cb+',.95)');g.addColorStop(.85,'rgba('+(cr*.35|0)+','+(cg*.35|0)+','+(cb*.4|0)+',.95)');g.addColorStop(1,'rgba(11,13,18,.9)');
+      octx.fillStyle=g;octx.beginPath();octx.arc(x,y,r,0,6.283);octx.fill();
+      octx.strokeStyle='rgba(255,255,255,.12)';octx.lineWidth=1;octx.stroke();
+      if(o.lab){let fs=r*.34;octx.font='500 '+fs.toFixed(1)+'px "JetBrains Mono", monospace';const tw=octx.measureText(o.lab).width;if(tw>r*1.55){fs*=r*1.55/tw;octx.font='500 '+fs.toFixed(1)+'px "JetBrains Mono", monospace'}octx.textAlign='center';octx.textBaseline='middle';octx.fillStyle='rgba(11,13,18,.92)';octx.fillText(o.lab,x,y+r*.08)}}}
+  function oloop(t){if(!orbsOn)return;odraw(t);orbsRaf=requestAnimationFrame(oloop)}
+  odraw(0);
+  if(!reduce)new IntersectionObserver(es=>{orbsOn=es[0].isIntersecting;cancelAnimationFrame(orbsRaf);if(orbsOn)orbsRaf=requestAnimationFrame(oloop)}).observe(oc);
+
+  // ---------- copy email ----------
+  const copyBtn=$('#copyBtn'),addr='jeevab2011@gmail.com';
+  copyBtn.addEventListener('click',()=>{const done=()=>{copyBtn.textContent='Copied';setTimeout(()=>copyBtn.textContent='Copy',1800)};
+    function sel(){const r=document.createRange();r.selectNodeContents($('#emailLink'));const s=getSelection();s.removeAllRanges();s.addRange(r);copyBtn.textContent='Selected'}
+    try{navigator.clipboard.writeText(addr).then(done).catch(sel)}catch(e){sel()}});
+})();
+</script>
+</body>
+</html>
